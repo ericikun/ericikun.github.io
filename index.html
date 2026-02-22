@@ -3,323 +3,947 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Portfolio</title>
+    <title>Zixu (Eric) Xing - Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Global Styles & Dark Tech Theme */
-        body {
+        /* CSS Variables for Auto Light/Dark Theme */
+        :root {
+            /* Light Theme Default */
+            --bg-color: #fbfbfd;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --nav-bg: rgba(251, 251, 253, 0.8);
+            --nav-border: rgba(0, 0, 0, 0.05);
+            --card-bg: #ffffff;
+            --card-border: #d2d2d7;
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --pill-bg: #f5f5f7;
+            --pill-border: #e5e5ea;
+            --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --particle-color: 0, 113, 227; /* RGB for rgba */
+            --gradient-start: #ffffff;
+            --gradient-end: #f5f5f7;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Dark Theme Overrides */
+                --bg-color: #000000;
+                --text-primary: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --nav-bg: rgba(0, 0, 0, 0.8);
+                --nav-border: rgba(255, 255, 255, 0.1);
+                --card-bg: #1c1c1e;
+                --card-border: #333336;
+                --accent: #2997ff;
+                --accent-hover: #31a1ff;
+                --pill-bg: #2c2c2e;
+                --pill-border: #3a3a3c;
+                --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.4);
+                --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.6);
+                --particle-color: 41, 151, 255;
+                --gradient-start: #000000;
+                --gradient-end: #111111;
+            }
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            overflow-x: hidden;
-            background-color: #050505; /* Darker to let the aurora pop */
-            color: #e2e8f0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        /* Fixed Aurora Container */
-        #aurora-container {
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* Typography */
+        h1, h2, h3 {
+            font-weight: 600;
+            letter-spacing: -0.015em;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+        }
+
+        /* Navigation */
+        nav {
             position: fixed;
             top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1; /* Behind content */
+            width: 100%;
+            background: var(--nav-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--nav-border);
+            z-index: 100;
         }
 
-        /* Layout Container */
-        .container {
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.2rem;
+            border-radius: 980px; /* Apple-style rounded */
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #ffffff !important;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent);
+            color: #ffffff;
+        }
+
+        .nav-links .btn-primary {
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        /* Mobile Menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0.5rem;
+        }
+
+        .hamburger svg {
+            fill: var(--text-primary);
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding-top: 60px;
+            background: linear-gradient(180deg, var(--gradient-start) 0%, var(--bg-color) 100%);
+            overflow: hidden; /* Contains particles */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            background: -webkit-linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p.intro {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        /* Canvas & Particle Toggle */
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none; /* Let clicks pass through to buttons */
+        }
+
+        .particle-toggle {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 10;
+            background: var(--nav-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s ease;
+        }
+
+        .particle-toggle:hover {
+            color: var(--text-primary);
+            border-color: var(--text-secondary);
+        }
+
+        /* Summary Section */
+        .summary-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-sm);
+            text-align: center;
             max-width: 800px;
             margin: 0 auto;
-            padding: 60px 20px;
-            position: relative;
-            z-index: 1;
         }
 
-        /* Glassmorphism Cards */
+        .summary-card p {
+            font-size: 1.15rem;
+            margin-bottom: 0;
+            color: var(--text-primary);
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-group h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .pill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .pill {
+            background: var(--pill-bg);
+            border: 1px solid var(--pill-border);
+            color: var(--text-primary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
         .card {
-            background: rgba(15, 23, 42, 0.4); /* Slightly more transparent */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 12px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: all 0.4s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .card:hover {
             transform: translateY(-5px);
-            border-color: #7cff67; /* Matched to your Aurora green */
-            box-shadow: 0 10px 25px rgba(124, 255, 103, 0.15);
+            box-shadow: var(--shadow-md);
         }
 
-        h1 {
-            color: #ffffff;
-            font-size: 2.5em;
-            margin-top: 0;
-            letter-spacing: 1px;
+        .card-meta {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
         }
 
-        h2 {
-            color: #7cff67;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 10px;
+        .card ul {
+            margin-top: 1rem;
+            padding-left: 1.2rem;
+            color: var(--text-secondary);
         }
 
-        p {
-            line-height: 1.6;
-            font-size: 1.1em;
-            color: #cbd5e1;
+        .card li {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            list-style-type: square;
         }
 
-        /* Tech Skill Tags */
-        .tags {
+        .card-tech {
+            margin-top: auto;
+            padding-top: 1.5rem;
             display: flex;
+            gap: 0.5rem;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
         }
 
-        .tag {
-            background: rgba(82, 39, 255, 0.2); /* Matched to your Aurora purple */
-            color: #bfa6ff;
-            border: 1px solid #5227FF;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-            letter-spacing: 0.5px;
+        /* Timeline (Experience & Education) */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 16px;
+            width: 2px;
+            background: var(--card-border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg-color);
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        /* Contact Section */
+        .contact {
+            text-align: center;
+            background: var(--card-bg);
+            border-top: 1px solid var(--card-border);
+        }
+
+        .contact p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--card-border);
+            background: var(--bg-color);
+        }
+
+        /* Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: var(--nav-bg);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem;
+                border-bottom: 1px solid var(--card-border);
+                transform: translateY(-150%);
+                transition: transform 0.3s ease;
+                z-index: 99;
+                opacity: 0;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .particle-toggle {
+                bottom: 1rem;
+                right: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div id="aurora-container"></div>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <a href="#home" class="logo">Zixu Xing</a>
+            <button class="hamburger" id="mobile-menu-btn" aria-label="Toggle menu">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="./resume.pdf" target="_blank" class="btn btn-primary">Resume</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <div class="container">
-        <header class="card">
-            <h1>Hello, World.</h1>
-            <p style="color: #ffffff; font-weight: bold; font-size: 1.2em;">Data Analysis | Advanced Mathematics | Research</p>
-        </header>
-
-        <section class="card">
-            <h2>About Me</h2>
-            <p>I am an international student with a deep focus on leveraging data, statistical models, and advanced mathematics to solve complex problems. My academic journey bridges rigorous theoretical proofs with practical programming applications.</p>
-        </section>
-
-        <section class="card">
-            <h2>Technical Toolkit & Academics</h2>
-            <p>My foundational toolkit spans programming languages and advanced quantitative analysis.</p>
-            <div class="tags">
-                <span class="tag">Python</span>
-                <span class="tag">SQL</span>
-                <span class="tag">R</span>
-                <span class="tag">Probability & Statistics</span>
-                <span class="tag">Differential Equations</span>
-                <span class="tag">Multivariable Calculus</span>
-                <span class="tag">Logic & Proofs</span>
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <canvas id="hero-canvas"></canvas>
+            <button id="particle-toggle" class="particle-toggle">✨ Particles: On</button>
+            
+            <div class="hero-content container reveal">
+                <h1>Zixu (Eric) Xing</h1>
+                <p class="intro">Data-focused undergraduate student working with SQL, R, Python, and Excel.</p>
+                <p>I build practical analytics projects and communicate results clearly through documentation and presentations.</p>
+                
+                <div class="hero-cta">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="./resume.pdf" target="_blank" class="btn btn-secondary">Download Resume</a>
+                </div>
             </div>
         </section>
 
-        <section class="card">
-            <h2>Experience & Objectives</h2>
-            <p>I am driven by opportunities to apply my analytical capabilities in real-world settings, such as organizational research. I specialize in designing methodologies, analyzing datasets, and drawing actionable insights from statistical evidence.</p>
+        <!-- Summary Section -->
+        <section id="summary" class="container reveal">
+            <div class="summary-card">
+                <p>Data-focused undergraduate student with hands-on experience in SQL, R, Python, and Excel alongside a strong background in campus outreach and customer service. Proven ability to clean and analyze complex quantitative and qualitative datasets while maintaining high accuracy in fast-paced environments. Skilled in technical documentation, presentation design, and student engagement through roles as a Campus Ambassador and Barista.</p>
+            </div>
         </section>
 
-        <section class="card">
-            <h2>Beyond the Screen</h2>
-            <p>When I am not writing code or solving equations, my primary creative outlet is music. I play the piano and the guzheng, blending traditional and modern sounds, often drawing structural and atmospheric inspiration from artists like The Weeknd.</p>
+        <!-- Skills Section -->
+        <section id="skills" class="container reveal">
+            <h2>Skills</h2>
+            <div class="skills-grid">
+                <div class="card skill-group">
+                    <h3>Technical</h3>
+                    <div class="pill-container">
+                        <span class="pill">SQL</span>
+                        <span class="pill">R</span>
+                        <span class="pill">Python</span>
+                        <span class="pill">OOP</span>
+                        <span class="pill">Data Cleaning</span>
+                        <span class="pill">Data Visualization</span>
+                        <span class="pill">Excel</span>
+                        <span class="pill">Word</span>
+                        <span class="pill">PowerPoint</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <h3>Statistics</h3>
+                    <div class="pill-container">
+                        <span class="pill">Confidence Intervals</span>
+                        <span class="pill">Hypothesis Testing</span>
+                        <span class="pill">Statistical Power</span>
+                        <span class="pill">Type I/II Error</span>
+                        <span class="pill">One-Factor ANOVA</span>
+                        <span class="pill">Simple Linear Regression</span>
+                    </div>
+                </div>
+                <div class="card skill-group">
+                    <h3>Soft Skills</h3>
+                    <div class="pill-container">
+                        <span class="pill">Cross-Cultural Communication</span>
+                        <span class="pill">Time Management</span>
+                        <span class="pill">Detail-Oriented</span>
+                        <span class="pill">Teamwork</span>
+                        <span class="pill">Problem-Solving</span>
+                        <span class="pill">Bilingual (English/Mandarin)</span>
+                    </div>
+                </div>
+            </div>
         </section>
-    </div>
 
-    <script type="module">
-        import { Renderer, Program, Mesh, Color, Triangle } from 'https://cdn.jsdelivr.net/npm/ogl@1.0.0/+esm';
+        <!-- Projects Section -->
+        <section id="projects" class="container reveal">
+            <h2>Projects</h2>
+            <div class="projects-grid">
+                
+                <div class="card">
+                    <div class="card-meta">Jan 2026 • Independent Project</div>
+                    <h3>Spotify Collaboration vs Solo Popularity</h3>
+                    <ul>
+                        <li>Cleaned and transformed a Spotify track dataset and created features (collaboration indicator, log(streams), charted flag).</li>
+                        <li>Estimated mean difference in log(streams) using 95% confidence intervals and two-sample t-tests.</li>
+                        <li>Compared chart likelihood using two-proportion confidence intervals and hypothesis testing.</li>
+                    </ul>
+                    <div class="card-tech">
+                        <span class="pill">R</span>
+                        <span class="pill">SQL</span>
+                    </div>
+                </div>
 
-        const VERT = `#version 300 es
-        in vec2 position;
-        void main() {
-          gl_Position = vec4(position, 0.0, 1.0);
-        }`;
+                <div class="card">
+                    <div class="card-meta">Mar 2025 • CSC148 Academic Project</div>
+                    <h3>Telecom Billing & Call Analytics</h3>
+                    <ul>
+                        <li>Designed and implemented an object-oriented system to process large-scale telecom call records from structured JSON datasets.</li>
+                        <li>Implemented contract-specific billing logic including free minutes, rate calculation, and monthly bill generation.</li>
+                        <li>Built filtering and querying for call events and wrote unit tests (pytest) with technical documentation.</li>
+                    </ul>
+                    <div class="card-tech">
+                        <span class="pill">Python</span>
+                        <span class="pill">OOP</span>
+                    </div>
+                </div>
 
-        const FRAG = `#version 300 es
-        precision highp float;
+                <div class="card">
+                    <div class="card-meta">Coming Soon</div>
+                    <h3>Future Data Project</h3>
+                    <p style="margin-top: 1rem; color: var(--text-secondary);">A future analytics project focusing on cleaning, exploration, and clear reporting.</p>
+                    <div class="card-tech">
+                        <span class="pill">SQL</span>
+                        <span class="pill">Python</span>
+                    </div>
+                </div>
 
-        uniform float uTime;
-        uniform float uAmplitude;
-        uniform vec3 uColorStops[3];
-        uniform vec2 uResolution;
-        uniform float uBlend;
+            </div>
+        </section>
 
-        out vec4 fragColor;
+        <!-- Experience Section -->
+        <section id="experience" class="container reveal">
+            <h2>Experience</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <div class="timeline-content card">
+                        <span class="timeline-date">Mar 2024 - Oct 2025 • Mississauga</span>
+                        <h3>Campus Ambassador</h3>
+                        <p style="margin-bottom: 0.5rem; font-weight: 500;">Easy Group Inc.</p>
+                        <ul>
+                            <li>Increased student engagement through on-campus outreach and onboarding, providing bilingual support (English and Mandarin) to ensure new international participants clearly understood program resources.</li>
+                            <li>Communicated complex program resources to diverse student groups by designing clear, engaging PowerPoint presentations and supporting on-site event coordination.</li>
+                        </ul>
+                    </div>
+                </div>
 
-        vec3 permute(vec3 x) {
-          return mod(((x * 34.0) + 1.0) * x, 289.0);
-        }
+                <div class="timeline-item">
+                    <div class="timeline-content card">
+                        <span class="timeline-date">Nov 2023 - Present • Mississauga</span>
+                        <h3>Barista</h3>
+                        <p style="margin-bottom: 0.5rem; font-weight: 500;">Chatime</p>
+                        <ul>
+                            <li>Demonstrated time management and teamwork by accurately processing 200+ orders daily during peak periods, ensuring high-quality service in a fast-paced environment.</li>
+                            <li>Performed regular inventory checks and restocking to maintain product availability and minimize out-of-stock issues.</li>
+                        </ul>
+                    </div>
+                </div>
 
-        float snoise(vec2 v){
-          const vec4 C = vec4(
-              0.211324865405187, 0.366025403784439,
-              -0.577350269189626, 0.024390243902439
-          );
-          vec2 i  = floor(v + dot(v, C.yy));
-          vec2 x0 = v - i + dot(i, C.xx);
-          vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-          vec4 x12 = x0.xyxy + C.xxzz;
-          x12.xy -= i1;
-          i = mod(i, 289.0);
+            </div>
+        </section>
 
-          vec3 p = permute(
-              permute(i.y + vec3(0.0, i1.y, 1.0))
-            + i.x + vec3(0.0, i1.x, 1.0)
-          );
+        <!-- Education Section -->
+        <section id="education" class="container reveal">
+            <h2>Education</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content card">
+                        <span class="timeline-date">Sept 2023 - Apr 2028</span>
+                        <h3>Honours Bachelor of Science</h3>
+                        <p style="margin-bottom: 1rem; font-weight: 500; color: var(--text-primary);">University of Toronto Mississauga</p>
+                        <p><strong>Program:</strong> Applied Statistics and Mathematics</p>
+                        <p><strong>Relevant Coursework:</strong></p>
+                        <ul>
+                            <li>CSC148 Introduction to Computer Science</li>
+                            <li>STA256 Probability and Statistics I</li>
+                            <li>STA258 Statistics with Applied Probability</li>
+                            <li>MAT236 Vector Calculus</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-          vec3 m = max(
-              0.5 - vec3(
-                  dot(x0, x0),
-                  dot(x12.xy, x12.xy),
-                  dot(x12.zw, x12.zw)
-              ), 
-              0.0
-          );
-          m = m * m;
-          m = m * m;
+        <!-- Contact Section -->
+        <section id="contact" class="contact reveal">
+            <div class="container">
+                <h2>Get In Touch</h2>
+                <p>Open to internships and student opportunities in data and analytics. Feel free to reach out to connect or discuss potential collaborations.</p>
+                <div class="contact-links">
+                    <a href="mailto:zixu.xing@mail.utoronto.ca" class="btn btn-primary">Email Me</a>
+                    <a href="https://www.linkedin.com/in/zixuxing/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">LinkedIn</a>
+                    <a href="https://github.com/ericikun" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
-          vec3 x = 2.0 * fract(p * C.www) - 1.0;
-          vec3 h = abs(x) - 0.5;
-          vec3 ox = floor(x + 0.5);
-          vec3 a0 = x - ox;
-          m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="year"></span> Zixu (Eric) Xing. All rights reserved.</p>
+        </div>
+    </footer>
 
-          vec3 g;
-          g.x  = a0.x  * x0.x  + h.x  * x0.y;
-          g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-          return 130.0 * dot(m, g);
-        }
+    <script>
+        // --- Setup Dynamic Year ---
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-        struct ColorStop {
-          vec3 color;
-          float position;
+        // --- Mobile Menu Toggle ---
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const navLinks = document.getElementById('nav-links');
+        
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close mobile menu when a link is clicked
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // --- Scroll Reveal Animation ---
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, {
+            root: null,
+            threshold: 0.15, // Trigger when 15% visible
+            rootMargin: "0px 0px -50px 0px"
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- Subtle Particle Effect (Restricted to Hero Section) ---
+        const canvas = document.getElementById('hero-canvas');
+        const ctx = canvas.getContext('2d');
+        const heroSection = document.getElementById('home');
+        const toggleBtn = document.getElementById('particle-toggle');
+        
+        let width, height;
+        let particles = [];
+        
+        // Respect prefers-reduced-motion
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let isParticlesEnabled = !prefersReducedMotion;
+        
+        updateToggleText();
+
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 100
         };
 
-        #define COLOR_RAMP(colors, factor, finalColor) {              \
-          int index = 0;                                              \
-          for (int i = 0; i < 2; i++) {                               \
-             ColorStop currentColor = colors[i];                      \
-             bool isInBetween = currentColor.position <= factor;      \
-             index = int(mix(float(index), float(i), float(isInBetween))); \
-          }                                                           \
-          ColorStop currentColor = colors[index];                     \
-          ColorStop nextColor = colors[index + 1];                    \
-          float range = nextColor.position - currentColor.position;   \
-          float lerpFactor = (factor - currentColor.position) / range; \
-          finalColor = mix(currentColor.color, nextColor.color, lerpFactor); \
-        }
+        // Initialize canvas
+        function initCanvas() {
+            // Match canvas size to the hero section specifically
+            width = canvas.width = heroSection.offsetWidth;
+            height = canvas.height = heroSection.offsetHeight;
+            
+            particles = [];
+            
+            if (!isParticlesEnabled) return;
 
-        void main() {
-          vec2 uv = gl_FragCoord.xy / uResolution;
-          
-          ColorStop colors[3];
-          colors[0] = ColorStop(uColorStops[0], 0.0);
-          colors[1] = ColorStop(uColorStops[1], 0.5);
-          colors[2] = ColorStop(uColorStops[2], 1.0);
-          
-          vec3 rampColor;
-          COLOR_RAMP(colors, uv.x, rampColor);
-          
-          float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
-          height = exp(height);
-          height = (uv.y * 2.0 - height + 0.2);
-          float intensity = 0.6 * height;
-          
-          float midPoint = 0.20;
-          float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
-          
-          vec3 auroraColor = intensity * rampColor;
-          
-          fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
-        }`;
-
-        const ctn = document.getElementById('aurora-container');
-        
-        // Initialize OGL Renderer
-        const renderer = new Renderer({
-            alpha: true,
-            premultipliedAlpha: true,
-            antialias: true
-        });
-        const gl = renderer.gl;
-        gl.clearColor(0, 0, 0, 0);
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-        gl.canvas.style.backgroundColor = 'transparent';
-        ctn.appendChild(gl.canvas);
-
-        let program;
-
-        function resize() {
-            const width = ctn.offsetWidth;
-            const height = ctn.offsetHeight;
-            renderer.setSize(width, height);
-            if (program) {
-                program.uniforms.uResolution.value = [width, height];
+            // Keep particle count low for a clean, minimal look
+            const numberOfParticles = (width * height) / 15000; 
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
             }
         }
-        window.addEventListener('resize', resize);
 
-        const geometry = new Triangle(gl);
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 1.5 + 0.5; // Tiny particles
+                this.baseX = this.x;
+                this.baseY = this.y;
+                this.density = (Math.random() * 20) + 1;
+                // Read color from CSS variable to adapt to light/dark mode
+                const styles = getComputedStyle(document.documentElement);
+                this.colorRGB = styles.getPropertyValue('--particle-color').trim();
+            }
 
-        // Map your colors into a flat Float32Array for the WebGL uniform
-        const rawColors = ['#5227FF', '#7cff67', '#5227FF'];
-        const colorStopsArray = new Float32Array(rawColors.map(hex => {
-            const c = new Color(hex);
-            return [c.r, c.g, c.b];
-        }).flat());
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.closePath();
+                ctx.fillStyle = `rgba(${this.colorRGB}, 0.5)`;
+                ctx.fill();
+            }
 
-        program = new Program(gl, {
-            vertex: VERT,
-            fragment: FRAG,
-            uniforms: {
-                uTime: { value: 0 },
-                uAmplitude: { value: 1.0 },
-                uColorStops: { value: colorStopsArray },
-                uResolution: { value: [ctn.offsetWidth, ctn.offsetHeight] },
-                uBlend: { value: 0.5 }
+            update() {
+                // Subtle drifting when mouse is away
+                if (mouse.x === null) {
+                    this.x += (Math.random() - 0.5) * 0.2;
+                    this.y += (Math.random() - 0.5) * 0.2;
+                    
+                    // Constrain to canvas bounds
+                    if(this.x < 0) this.x = width;
+                    if(this.x > width) this.x = 0;
+                    if(this.y < 0) this.y = height;
+                    if(this.y > height) this.y = 0;
+                    return;
+                }
+
+                // Interactive repelling effect when mouse is near
+                let dx = mouse.x - this.x;
+                let dy = mouse.y - this.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
+                
+                let forceDirectionX = dx / distance;
+                let forceDirectionY = dy / distance;
+                
+                let maxDistance = mouse.radius;
+                let force = (maxDistance - distance) / maxDistance;
+                let directionX = forceDirectionX * force * this.density;
+                let directionY = forceDirectionY * force * this.density;
+
+                if (distance < mouse.radius) {
+                    this.x -= directionX;
+                    this.y -= directionY;
+                } else {
+                    // Return to original base positions smoothly
+                    if (this.x !== this.baseX) {
+                        let dx = this.x - this.baseX;
+                        this.x -= dx / 20;
+                    }
+                    if (this.y !== this.baseY) {
+                        let dy = this.y - this.baseY;
+                        this.y -= dy / 20;
+                    }
+                }
+            }
+        }
+
+        function animate() {
+            if (!isParticlesEnabled) {
+                ctx.clearRect(0, 0, width, height);
+                return; // Stop animation loop if disabled
+            }
+            
+            ctx.clearRect(0, 0, width, height);
+            
+            // Re-fetch color in case theme changed
+            const styles = getComputedStyle(document.documentElement);
+            const currentRGB = styles.getPropertyValue('--particle-color').trim();
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].colorRGB = currentRGB;
+                particles[i].update();
+                particles[i].draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        // Mouse tracking - only relative to the hero section
+        heroSection.addEventListener('mousemove', (e) => {
+            if (!isParticlesEnabled) return;
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        heroSection.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        window.addEventListener('resize', () => {
+            initCanvas();
+        });
+
+        // Toggle functionality
+        toggleBtn.addEventListener('click', () => {
+            isParticlesEnabled = !isParticlesEnabled;
+            updateToggleText();
+            if (isParticlesEnabled) {
+                initCanvas();
+                animate();
+            } else {
+                ctx.clearRect(0, 0, width, height);
             }
         });
 
-        const mesh = new Mesh(gl, { geometry, program });
+        function updateToggleText() {
+            toggleBtn.textContent = isParticlesEnabled ? '✨ Particles: On' : '✨ Particles: Off';
+        }
 
-        // --- INTERACTIVE FEEDBACK LOGIC ---
-        // Variables to smoothly transition shader values based on mouse
-        let targetAmplitude = 1.0;
-        let targetBlend = 0.5;
+        // Start
+        initCanvas();
+        if (isParticlesEnabled) {
+            animate();
+        }
 
-        window.addEventListener('mousemove', (e) => {
-            const normalizedX = e.clientX / window.innerWidth;
-            const normalizedY = e.clientY / window.innerHeight;
-            
-            // Mouse X controls the aurora blend spread
-            targetBlend = 0.2 + (normalizedX * 0.8); 
-            // Mouse Y controls the wave amplitude
-            targetAmplitude = 0.5 + (normalizedY * 1.5); 
-        });
-
-        // Animation Loop
-        const update = t => {
-            requestAnimationFrame(update);
-            
-            // Smooth easing for mouse interaction
-            program.uniforms.uAmplitude.value += (targetAmplitude - program.uniforms.uAmplitude.value) * 0.05;
-            program.uniforms.uBlend.value += (targetBlend - program.uniforms.uBlend.value) * 0.05;
-            
-            // Update time
-            program.uniforms.uTime.value = t * 0.0005;
-            
-            renderer.render({ scene: mesh });
-        };
-        
-        requestAnimationFrame(update);
-        resize();
     </script>
 </body>
 </html>
