@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,69 +8,65 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Variables for Auto Light/Dark Theme */
+        /* CSS Variables for Auto Light/Dark Theme (Apple Style) */
         :root {
-            /* Light Theme Default */
-            --bg-color: #fbfbfd;
+            --bg-base: #fbfbfd;
+            --bg-secondary: #f5f5f7;
             --text-primary: #1d1d1f;
             --text-secondary: #86868b;
-            --nav-bg: rgba(251, 251, 253, 0.8);
-            --nav-border: rgba(0, 0, 0, 0.05);
-            --card-bg: #ffffff;
-            --card-border: #d2d2d7;
-            --accent: #0071e3;
+            --nav-bg: rgba(251, 251, 253, 0.75);
+            --nav-border: rgba(0, 0, 0, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --card-border: rgba(0, 0, 0, 0.05);
+            --accent: #0066cc;
             --accent-hover: #0077ed;
-            --pill-bg: #f5f5f7;
-            --pill-border: #e5e5ea;
-            --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --particle-color: 0, 113, 227; /* RGB for rgba */
-            --gradient-start: #ffffff;
-            --gradient-end: #f5f5f7;
+            --pill-bg: #e8e8ed;
+            --pill-text: #1d1d1f;
+            --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --glow-color-1: rgba(0, 102, 204, 0.4); /* Blue */
+            --glow-color-2: rgba(142, 68, 173, 0.3); /* Purple */
+            --glow-color-3: rgba(46, 204, 113, 0.3); /* Green */
         }
 
         @media (prefers-color-scheme: dark) {
             :root {
-                /* Dark Theme Overrides */
-                --bg-color: #000000;
+                --bg-base: #000000;
+                --bg-secondary: #111111;
                 --text-primary: #f5f5f7;
                 --text-secondary: #a1a1a6;
-                --nav-bg: rgba(0, 0, 0, 0.8);
-                --nav-border: rgba(255, 255, 255, 0.1);
-                --card-bg: #1c1c1e;
-                --card-border: #333336;
+                --nav-bg: rgba(0, 0, 0, 0.75);
+                --nav-border: rgba(255, 255, 255, 0.15);
+                --card-bg: rgba(28, 28, 30, 0.5);
+                --card-border: rgba(255, 255, 255, 0.1);
                 --accent: #2997ff;
-                --accent-hover: #31a1ff;
-                --pill-bg: #2c2c2e;
-                --pill-border: #3a3a3c;
-                --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.4);
-                --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.6);
-                --particle-color: 41, 151, 255;
-                --gradient-start: #000000;
-                --gradient-end: #111111;
+                --accent-hover: #4fb0ff;
+                --pill-bg: #333336;
+                --pill-text: #f5f5f7;
+                --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.5);
+                --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.7);
+                --glow-color-1: rgba(41, 151, 255, 0.4); /* Light Blue */
+                --glow-color-2: rgba(155, 89, 182, 0.3); /* Light Purple */
+                --glow-color-3: rgba(46, 204, 113, 0.2); /* Soft Green */
             }
         }
 
-        /* Reset & Base Styles */
+        /* Base Resets */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
+            background-color: var(--bg-base);
             color: var(--text-primary);
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             overflow-x: hidden;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         a {
@@ -78,53 +74,50 @@
             text-decoration: none;
             transition: color 0.2s ease;
         }
-
+        
         a:hover {
             color: var(--accent-hover);
         }
 
-        ul {
-            list-style: none;
-        }
-
         /* Typography */
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-weight: 600;
-            letter-spacing: -0.015em;
+            letter-spacing: -0.02em;
         }
 
         h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            line-height: 1.1;
-            margin-bottom: 1rem;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
         }
 
         h2 {
-            font-size: clamp(1.8rem, 3vw, 2.5rem);
-            margin-bottom: 2rem;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 3rem;
             text-align: center;
         }
 
         h3 {
-            font-size: 1.25rem;
+            font-size: 1.4rem;
             margin-bottom: 0.5rem;
         }
 
         p {
             color: var(--text-secondary);
             font-size: 1.1rem;
+            line-height: 1.6;
             margin-bottom: 1rem;
         }
 
         /* Layout */
         .container {
-            max-width: 1000px;
+            max-width: 1040px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
         section {
-            padding: 6rem 0;
+            padding: 7rem 0;
         }
 
         /* Navigation */
@@ -133,8 +126,8 @@
             top: 0;
             width: 100%;
             background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--nav-border);
             z-index: 100;
         }
@@ -143,29 +136,28 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 60px;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 0 2rem;
+            height: 64px;
         }
 
         .logo {
             font-weight: 600;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: var(--text-primary);
-            letter-spacing: -0.02em;
+            letter-spacing: -0.01em;
         }
 
         .nav-links {
             display: flex;
             gap: 2rem;
             align-items: center;
+            list-style: none;
         }
 
         .nav-links a {
             color: var(--text-secondary);
             font-size: 0.9rem;
-            font-weight: 400;
+            font-weight: 500;
+            transition: color 0.2s;
         }
 
         .nav-links a:hover {
@@ -177,13 +169,14 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0.6rem 1.2rem;
-            border-radius: 980px; /* Apple-style rounded */
-            font-size: 0.9rem;
+            padding: 0.8rem 1.6rem;
+            border-radius: 980px;
+            font-size: 1rem;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             border: none;
+            text-decoration: none;
         }
 
         .btn-primary {
@@ -193,20 +186,36 @@
 
         .btn-primary:hover {
             background-color: var(--accent-hover);
-            transform: scale(1.02);
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(0, 113, 227, 0.3);
         }
 
         .btn-secondary {
             background-color: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
+            color: var(--text-primary);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-            background-color: var(--accent);
-            color: #ffffff;
+            background-color: var(--text-primary);
+            color: var(--bg-base) !important;
+        }
+        
+        .btn-link {
+            padding: 0;
+            color: var(--accent);
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-link:hover {
+            color: var(--accent-hover);
         }
 
+        /* Nav specific button */
         .nav-links .btn-primary {
             padding: 0.4rem 1rem;
             font-size: 0.85rem;
@@ -215,30 +224,33 @@
         /* Mobile Menu */
         .hamburger {
             display: none;
-            cursor: pointer;
-            border: none;
             background: none;
-            padding: 0.5rem;
+            border: none;
+            cursor: pointer;
         }
+        .hamburger svg { fill: var(--text-primary); width: 24px; height: 24px; }
 
-        .hamburger svg {
-            fill: var(--text-primary);
-            width: 24px;
-            height: 24px;
-        }
-
-        /* Hero Section */
+        /* Hero Section (Apple Intelligence Glow) */
         .hero {
             position: relative;
-            min-height: 100vh;
+            min-height: 95vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding-top: 60px;
-            background: linear-gradient(180deg, var(--gradient-start) 0%, var(--bg-color) 100%);
-            overflow: hidden; /* Contains particles */
+            padding-top: 64px;
+            overflow: hidden;
+        }
+
+        #hero-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
         }
 
         .hero-content {
@@ -248,16 +260,17 @@
         }
 
         .hero h1 {
-            background: -webkit-linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero p.intro {
-            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
             color: var(--text-secondary);
-            margin-bottom: 2rem;
-            max-width: 600px;
+            margin-bottom: 2.5rem;
+            font-weight: 400;
+            max-width: 650px;
             margin-left: auto;
             margin-right: auto;
         }
@@ -266,21 +279,9 @@
             display: flex;
             gap: 1rem;
             justify-content: center;
-            margin-top: 2rem;
         }
 
-        /* Canvas & Particle Toggle */
-        #hero-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none; /* Let clicks pass through to buttons */
-        }
-
-        .particle-toggle {
+        .effect-toggle {
             position: absolute;
             bottom: 2rem;
             right: 2rem;
@@ -288,182 +289,161 @@
             background: var(--nav-bg);
             border: 1px solid var(--card-border);
             color: var(--text-secondary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 0.5rem 1rem;
+            border-radius: 980px;
+            font-size: 0.85rem;
             cursor: pointer;
             backdrop-filter: blur(10px);
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
+        .effect-toggle:hover { color: var(--text-primary); border-color: var(--text-secondary); }
 
-        .particle-toggle:hover {
-            color: var(--text-primary);
-            border-color: var(--text-secondary);
-        }
-
-        /* Summary Section */
-        .summary-card {
+        /* Generic Glass Card */
+        .glass-card {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 3rem;
+            border-radius: 28px;
+            padding: 2.5rem;
             box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* About Section */
+        .about-text {
+            font-size: 1.3rem;
+            line-height: 1.7;
             text-align: center;
+            color: var(--text-primary);
             max-width: 800px;
             margin: 0 auto;
+            font-weight: 400;
         }
 
-        .summary-card p {
-            font-size: 1.15rem;
-            margin-bottom: 0;
-            color: var(--text-primary);
-        }
-
-        /* Skills Section */
-        .skills-grid {
+        /* Projects Section & 3D Tilt */
+        .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
+            perspective: 1000px;
         }
 
-        .skill-group h3 {
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            transform-style: preserve-3d;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+            will-change: transform;
+        }
+
+        .project-card:hover {
+            box-shadow: var(--shadow-md);
+            z-index: 10;
+        }
+
+        .project-meta {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-detail {
+            margin-top: 1.5rem;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .project-detail-row {
+            display: grid;
+            grid-template-columns: 70px 1fr;
+            font-size: 0.95rem;
+        }
+
+        .project-detail-row strong {
             color: var(--text-primary);
         }
+        
+        .project-detail-row span {
+            color: var(--text-secondary);
+        }
+
+        .project-actions {
+            margin-top: auto;
+            padding-top: 2rem;
+        }
+
+        /* Bento Grid (Skills) */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+        
+        .bento-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Tech span 2 columns on large screens */
+        .bento-tech { grid-column: span 2; }
+        .bento-stat { grid-column: span 1; }
+        .bento-soft { grid-column: span 3; }
 
         .pill-container {
             display: flex;
             flex-wrap: wrap;
             gap: 0.6rem;
+            margin-top: 1rem;
         }
 
         .pill {
             background: var(--pill-bg);
-            border: 1px solid var(--pill-border);
-            color: var(--text-primary);
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
+            color: var(--pill-text);
+            padding: 0.5rem 1rem;
+            border-radius: 980px;
+            font-size: 0.9rem;
             font-weight: 500;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+        .pill:hover {
+            transform: scale(1.05);
+            background: var(--text-primary);
+            color: var(--bg-base);
         }
 
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: var(--shadow-sm);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .card-meta {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
-
-        .card ul {
-            margin-top: 1rem;
-            padding-left: 1.2rem;
-            color: var(--text-secondary);
-        }
-
-        .card li {
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
-            list-style-type: square;
-        }
-
-        .card-tech {
-            margin-top: auto;
-            padding-top: 1.5rem;
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        /* Timeline (Experience & Education) */
-        .timeline {
-            position: relative;
+        /* Timeline (Experience / Education) */
+        .timeline-container {
             max-width: 800px;
             margin: 0 auto;
+            display: grid;
+            gap: 2rem;
         }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 16px;
-            width: 2px;
-            background: var(--card-border);
-        }
-
-        .timeline-item {
-            position: relative;
-            padding-left: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .timeline-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .timeline-item::before {
-            content: '';
-            position: absolute;
-            left: 11px;
-            top: 6px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: 2px solid var(--bg-color);
-        }
-
-        .timeline-content {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .timeline-date {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
             margin-bottom: 0.5rem;
-            display: inline-block;
         }
+        
+        .timeline-header h3 { margin: 0; }
+        .timeline-header span { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;}
 
         /* Contact Section */
         .contact {
             text-align: center;
-            background: var(--card-bg);
+            background: var(--bg-secondary);
             border-top: 1px solid var(--card-border);
         }
 
         .contact p {
             max-width: 600px;
-            margin: 0 auto 2rem;
+            margin: 0 auto 2.5rem;
+            font-size: 1.2rem;
         }
 
         .contact-links {
@@ -478,80 +458,68 @@
             text-align: center;
             padding: 2rem;
             color: var(--text-secondary);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--card-border);
-            background: var(--bg-color);
+            font-size: 0.9rem;
+            background: var(--bg-secondary);
         }
 
-        /* Reveal Animations */
+        /* Scroll Reveal Animation */
         .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(40px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-tech, .bento-stat, .bento-soft { grid-column: span 1; }
         }
 
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
                 position: absolute;
-                top: 60px;
+                top: 64px;
                 left: 0;
                 width: 100%;
                 background: var(--nav-bg);
-                backdrop-filter: blur(20px);
+                backdrop-filter: blur(24px);
                 flex-direction: column;
                 padding: 2rem;
                 border-bottom: 1px solid var(--card-border);
                 transform: translateY(-150%);
                 transition: transform 0.3s ease;
-                z-index: 99;
                 opacity: 0;
+                visibility: hidden;
             }
-
             .nav-links.active {
                 transform: translateY(0);
                 opacity: 1;
+                visibility: visible;
             }
-
-            .hamburger {
-                display: block;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .particle-toggle {
-                bottom: 1rem;
-                right: 1rem;
-            }
+            .hamburger { display: block; }
+            .hero-cta { flex-direction: column; width: 100%; max-width: 300px; margin: 2rem auto 0; }
+            .effect-toggle { bottom: 1rem; right: 1rem; }
+            .timeline-header { flex-direction: column; gap: 0.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
+    <!-- Header Navigation -->
     <nav>
-        <div class="nav-content">
-            <a href="#home" class="logo">Zixu Xing</a>
+        <div class="container nav-content">
+            <a href="#hero" class="logo">Zixu Xing</a>
             <button class="hamburger" id="mobile-menu-btn" aria-label="Toggle menu">
-                <svg viewBox="0 0 24 24">
-                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
-                </svg>
+                <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
             </button>
             <ul class="nav-links" id="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#skills">Skills</a></li>
+                <li><a href="#about">About</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#experience">Experience</a></li>
+                <li><a href="#skills">Skills</a></li>
                 <li><a href="#education">Education</a></li>
-                <li><a href="#contact">Contact</a></li>
                 <li><a href="./resume.pdf" target="_blank" class="btn btn-primary">Resume</a></li>
             </ul>
         </div>
@@ -559,112 +527,114 @@
 
     <main>
         <!-- Hero Section -->
-        <section id="home" class="hero">
+        <section id="hero" class="hero">
             <canvas id="hero-canvas"></canvas>
-            <button id="particle-toggle" class="particle-toggle">✨ Particles: On</button>
+            <button id="effect-toggle" class="effect-toggle">Motion: On</button>
             
             <div class="hero-content container reveal">
-                <h1>Zixu (Eric) Xing</h1>
-                <p class="intro">Data-focused undergraduate student working with SQL, R, Python, and Excel.</p>
-                <p>I build practical analytics projects and communicate results clearly through documentation and presentations.</p>
-                
+                <h1>Finding clarity in<br>complex data.</h1>
+                <p class="intro">I'm Eric, a Statistics & Math student at UofT. I build scalable analytics systems, clean messy datasets, and uncover insights that drive decisions.</p>
                 <div class="hero-cta">
-                    <a href="#projects" class="btn btn-primary">View Projects</a>
-                    <a href="./resume.pdf" target="_blank" class="btn btn-secondary">Download Resume</a>
+                    <a href="#projects" class="btn btn-primary">View My Work</a>
+                    <a href="#contact" class="btn btn-secondary">Get in Touch</a>
                 </div>
             </div>
         </section>
 
-        <!-- Summary Section -->
-        <section id="summary" class="container reveal">
-            <div class="summary-card">
-                <p>Data-focused undergraduate student with hands-on experience in SQL, R, Python, and Excel alongside a strong background in campus outreach and customer service. Proven ability to clean and analyze complex quantitative and qualitative datasets while maintaining high accuracy in fast-paced environments. Skilled in technical documentation, presentation design, and student engagement through roles as a Campus Ambassador and Barista.</p>
-            </div>
-        </section>
-
-        <!-- Skills Section -->
-        <section id="skills" class="container reveal">
-            <h2>Skills</h2>
-            <div class="skills-grid">
-                <div class="card skill-group">
-                    <h3>Technical</h3>
-                    <div class="pill-container">
-                        <span class="pill">SQL</span>
-                        <span class="pill">R</span>
-                        <span class="pill">Python</span>
-                        <span class="pill">OOP</span>
-                        <span class="pill">Data Cleaning</span>
-                        <span class="pill">Data Visualization</span>
-                        <span class="pill">Excel</span>
-                        <span class="pill">Word</span>
-                        <span class="pill">PowerPoint</span>
-                    </div>
-                </div>
-                <div class="card skill-group">
-                    <h3>Statistics</h3>
-                    <div class="pill-container">
-                        <span class="pill">Confidence Intervals</span>
-                        <span class="pill">Hypothesis Testing</span>
-                        <span class="pill">Statistical Power</span>
-                        <span class="pill">Type I/II Error</span>
-                        <span class="pill">One-Factor ANOVA</span>
-                        <span class="pill">Simple Linear Regression</span>
-                    </div>
-                </div>
-                <div class="card skill-group">
-                    <h3>Soft Skills</h3>
-                    <div class="pill-container">
-                        <span class="pill">Cross-Cultural Communication</span>
-                        <span class="pill">Time Management</span>
-                        <span class="pill">Detail-Oriented</span>
-                        <span class="pill">Teamwork</span>
-                        <span class="pill">Problem-Solving</span>
-                        <span class="pill">Bilingual (English/Mandarin)</span>
-                    </div>
-                </div>
+        <!-- About Section -->
+        <section id="about" class="container reveal">
+            <div class="glass-card">
+                <p class="about-text">
+                    I analyze data with the precision of a mathematician and manage projects with the efficiency of a peak-hour barista. Whether I'm building OOP telecom systems or guiding international students as a Campus Ambassador, my focus is always on clear communication and flawless execution.
+                </p>
             </div>
         </section>
 
         <!-- Projects Section -->
         <section id="projects" class="container reveal">
-            <h2>Projects</h2>
+            <h2>Featured Projects</h2>
             <div class="projects-grid">
                 
-                <div class="card">
-                    <div class="card-meta">Jan 2026 • Independent Project</div>
+                <!-- Project 1 -->
+                <div class="glass-card project-card">
+                    <div class="project-meta">Jan 2026 • R, SQL</div>
                     <h3>Spotify Collaboration vs Solo Popularity</h3>
-                    <ul>
-                        <li>Cleaned and transformed a Spotify track dataset and created features (collaboration indicator, log(streams), charted flag).</li>
-                        <li>Estimated mean difference in log(streams) using 95% confidence intervals and two-sample t-tests.</li>
-                        <li>Compared chart likelihood using two-proportion confidence intervals and hypothesis testing.</li>
-                    </ul>
-                    <div class="card-tech">
-                        <span class="pill">R</span>
-                        <span class="pill">SQL</span>
+                    
+                    <div class="project-detail">
+                        <div class="project-detail-row">
+                            <strong>Goal</strong>
+                            <span>Determine what specific factors make a song chart.</span>
+                        </div>
+                        <div class="project-detail-row">
+                            <strong>Method</strong>
+                            <span>Cleaned the dataset, engineered log-stream features, and applied 95% confidence intervals and two-sample t-tests.</span>
+                        </div>
+                        <div class="project-detail-row">
+                            <strong>Impact</strong>
+                            <span>Quantified the exact popularity gap between solo and collaborative tracks.</span>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://github.com/ericikun/Spotify-Collab-vs-Solo---SQL-R-Project" target="_blank" rel="noopener noreferrer" class="btn-link">
+                            View on GitHub 
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-meta">Mar 2025 • CSC148 Academic Project</div>
+                <!-- Project 2 -->
+                <div class="glass-card project-card">
+                    <div class="project-meta">Mar 2025 • Python, OOP</div>
                     <h3>Telecom Billing & Call Analytics</h3>
-                    <ul>
-                        <li>Designed and implemented an object-oriented system to process large-scale telecom call records from structured JSON datasets.</li>
-                        <li>Implemented contract-specific billing logic including free minutes, rate calculation, and monthly bill generation.</li>
-                        <li>Built filtering and querying for call events and wrote unit tests (pytest) with technical documentation.</li>
-                    </ul>
-                    <div class="card-tech">
-                        <span class="pill">Python</span>
-                        <span class="pill">OOP</span>
+                    
+                    <div class="project-detail">
+                        <div class="project-detail-row">
+                            <strong>Goal</strong>
+                            <span>Architect a scalable billing processor.</span>
+                        </div>
+                        <div class="project-detail-row">
+                            <strong>Method</strong>
+                            <span>Built an OOP system to process JSON call records with contract-specific logic and event filtering.</span>
+                        </div>
+                        <div class="project-detail-row">
+                            <strong>Impact</strong>
+                            <span>Delivered a fully tested (pytest) and robust application with comprehensive technical documentation.</span>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <a href="https://github.com/ericikun/Telecom-Billing-Call-Analytics-System" target="_blank" rel="noopener noreferrer" class="btn-link">
+                            View on GitHub 
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-meta">Coming Soon</div>
-                    <h3>Future Data Project</h3>
-                    <p style="margin-top: 1rem; color: var(--text-secondary);">A future analytics project focusing on cleaning, exploration, and clear reporting.</p>
-                    <div class="card-tech">
-                        <span class="pill">SQL</span>
-                        <span class="pill">Python</span>
+                <!-- Project 3 -->
+                <div class="glass-card project-card">
+                    <div class="project-meta">Coming Soon • Data Eng</div>
+                    <h3>Data Project Coming Soon</h3>
+                    
+                    <div class="project-detail">
+                        <div class="project-detail-row">
+                            <strong>Goal</strong>
+                            <span>A future analytics project focusing on data cleaning, exploration, and clear reporting.</span>
+                        </div>
+                        <div class="project-detail-row">
+                            <strong>Method</strong>
+                            <span>To be determined based on organizational research interests.</span>
+                        </div>
+                        <div class="project-detail-row">
+                            <strong>Impact</strong>
+                            <span>Stay tuned for updates.</span>
+                        </div>
+                    </div>
+
+                    <div class="project-actions">
+                        <span class="btn-link" style="color: var(--text-secondary); cursor: default;">
+                            In Progress
+                        </span>
                     </div>
                 </div>
 
@@ -674,63 +644,104 @@
         <!-- Experience Section -->
         <section id="experience" class="container reveal">
             <h2>Experience</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content card">
-                        <span class="timeline-date">Nov 2023 - Present • Mississauga</span>
-                        <h3>Barista</h3>
-                        <p style="margin-bottom: 0.5rem; font-weight: 500;">Chatime</p>
-                        <ul>
-                            <li>Demonstrated time management and teamwork by accurately processing 200+ orders daily during peak periods, ensuring high-quality service in a fast-paced environment.</li>
-                            <li>Performed regular inventory checks and restocking to maintain product availability and minimize out-of-stock issues.</li>
-                        </ul>
+            <div class="timeline-container">
+                
+                <div class="glass-card">
+                    <div class="timeline-header">
+                        <h3>Campus Ambassador <span style="font-weight: 400; color: var(--text-secondary);">at Easy Group Inc.</span></h3>
+                        <span>Mar 2024 - Oct 2025</span>
+                    </div>
+                    <p>Increased student engagement through on-campus outreach and onboarding. Provided bilingual support (English and Mandarin) to ensure new international participants clearly understood program resources.</p>
+                    <p style="margin-bottom: 0;">Communicated complex program resources to diverse student groups by designing clear, engaging PowerPoint presentations and supporting on-site event coordination.</p>
+                </div>
+
+                <div class="glass-card">
+                    <div class="timeline-header">
+                        <h3>Barista <span style="font-weight: 400; color: var(--text-secondary);">at Chatime</span></h3>
+                        <span>Nov 2023 - Present</span>
+                    </div>
+                    <p>Demonstrated time management and teamwork by accurately processing 200+ orders daily during peak periods, ensuring high-quality service in a fast-paced environment.</p>
+                    <p style="margin-bottom: 0;">Performed regular inventory checks and restocking to maintain product availability and minimize out-of-stock issues.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Skills (Bento Grid) -->
+        <section id="skills" class="container reveal">
+            <h2>Skills</h2>
+            <div class="bento-grid">
+                
+                <div class="glass-card bento-item bento-tech">
+                    <h3>Technical Tools</h3>
+                    <p style="font-size: 0.95rem;">Programming languages and core software capabilities.</p>
+                    <div class="pill-container mt-auto">
+                        <span class="pill">Python</span>
+                        <span class="pill">SQL</span>
+                        <span class="pill">R</span>
+                        <span class="pill">OOP</span>
+                        <span class="pill">Data Cleaning</span>
+                        <span class="pill">Data Visualization</span>
+                        <span class="pill">Excel</span>
                     </div>
                 </div>
 
-            <div class="timeline-item">
-                    <div class="timeline-content card">
-                        <span class="timeline-date">Mar 2024 - Oct 2025 • Mississauga</span>
-                        <h3>Campus Ambassador</h3>
-                        <p style="margin-bottom: 0.5rem; font-weight: 500;">Easy Group Inc.</p>
-                        <ul>
-                            <li>Increased student engagement through on-campus outreach and onboarding, providing bilingual support (English and Mandarin) to ensure new international participants clearly understood program resources.</li>
-                            <li>Communicated complex program resources to diverse student groups by designing clear, engaging PowerPoint presentations and supporting on-site event coordination.</li>
-                        </ul>
+                <div class="glass-card bento-item bento-stat">
+                    <h3>Statistics</h3>
+                    <p style="font-size: 0.95rem;">Theoretical models and applied probability.</p>
+                    <div class="pill-container mt-auto">
+                        <span class="pill">Hypothesis Testing</span>
+                        <span class="pill">Confidence Intervals</span>
+                        <span class="pill">ANOVA</span>
+                        <span class="pill">Linear Regression</span>
+                        <span class="pill">Type I/II Error</span>
+                    </div>
+                </div>
+
+                <div class="glass-card bento-item bento-soft">
+                    <h3>Soft Skills</h3>
+                    <p style="font-size: 0.95rem;">Communication and project management.</p>
+                    <div class="pill-container mt-auto">
+                        <span class="pill">Bilingual (English/Mandarin)</span>
+                        <span class="pill">Cross-Cultural Communication</span>
+                        <span class="pill">Analytical Problem-Solving</span>
+                        <span class="pill">Time Management</span>
+                        <span class="pill">Collaborative Teamwork</span>
                     </div>
                 </div>
 
             </div>
         </section>
 
-        <!-- Education Section -->
+        <!-- Education -->
         <section id="education" class="container reveal">
             <h2>Education</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content card">
-                        <span class="timeline-date">Sept 2023 - Apr 2028</span>
-                        <h3>Honours Bachelor of Science</h3>
-                        <p style="margin-bottom: 1rem; font-weight: 500; color: var(--text-primary);">University of Toronto Mississauga</p>
-                        <p><strong>Program:</strong> Applied Statistics and Mathematics</p>
-                        <p><strong>Relevant Coursework:</strong></p>
-                        <ul>
-                            <li>CSC148 Introduction to Computer Science</li>
-                            <li>STA256 Probability and Statistics I</li>
-                            <li>STA258 Statistics with Applied Probability</li>
-                            <li>MAT236 Vector Calculus</li>
-                        </ul>
+            <div class="timeline-container">
+                <div class="glass-card">
+                    <div class="timeline-header">
+                        <h3>Honours Bachelor of Science <span style="font-weight: 400; color: var(--text-secondary);">at University of Toronto</span></h3>
+                        <span>Sept 2023 - Apr 2028</span>
+                    </div>
+                    <p><strong>Program:</strong> Applied Statistics and Mathematics</p>
+                    <p style="margin-bottom: 0.5rem;"><strong>Relevant Coursework:</strong></p>
+                    <div class="pill-container">
+                        <span class="pill">CSC148 Computer Science</span>
+                        <span class="pill">STA256 Probability & Stat I</span>
+                        <span class="pill">STA258 Applied Probability</span>
+                        <span class="pill">MAT236 Vector Calculus</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Contact Section -->
+        <!-- Contact CTA -->
         <section id="contact" class="contact reveal">
             <div class="container">
-                <h2>Get In Touch</h2>
-                <p>Open to internships and student opportunities in data and analytics. Feel free to reach out to connect or discuss potential collaborations.</p>
+                <h2>Let's Connect</h2>
+                <p>Open to internships and student opportunities in data and analytics. Whether you have a question or just want to say hi, I'll try my best to get back to you!</p>
                 <div class="contact-links">
                     <a href="mailto:zixu.xing@mail.utoronto.ca" class="btn btn-primary">Email Me</a>
+                    <a href="./resume.pdf" target="_blank" class="btn btn-secondary">Download Resume</a>
                     <a href="https://www.linkedin.com/in/zixuxing/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">LinkedIn</a>
                     <a href="https://github.com/ericikun" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub</a>
                 </div>
@@ -745,203 +756,165 @@
     </footer>
 
     <script>
-        // --- Setup Dynamic Year ---
+        // --- 1. Dynamic Year ---
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // --- Mobile Menu Toggle ---
+        // --- 2. Mobile Nav Toggle ---
         const menuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
         
-        menuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-
-        // Close mobile menu when a link is clicked
+        menuBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
         navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
+            link.addEventListener('click', () => navLinks.classList.remove('active'));
         });
 
-        // --- Scroll Reveal Animation ---
+        // --- 3. Scroll Reveal Animation ---
         const revealElements = document.querySelectorAll('.reveal');
-        
         const revealObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('active');
-                    observer.unobserve(entry.target); // Only animate once
+                    observer.unobserve(entry.target);
                 }
             });
-        }, {
-            root: null,
-            threshold: 0.15, // Trigger when 15% visible
-            rootMargin: "0px 0px -50px 0px"
-        });
-
+        }, { root: null, threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
         revealElements.forEach(el => revealObserver.observe(el));
 
-        // --- Subtle Particle Effect (Restricted to Hero Section) ---
+        // --- 4. 3D Glass Card Tilt Effect ---
+        // Respect reduced motion globally for tilt and canvas
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        
+        if (!prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
+            const cards = document.querySelectorAll('.project-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    // Calculate rotation (max 8 degrees)
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -8;
+                    const rotateY = ((x - centerX) / centerX) * 8;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                    card.style.transition = 'none'; // Remove transition during move for instant response
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                    card.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease'; // Add smooth reset
+                });
+            });
+        }
+
+        // --- 5. Apple Intelligence Glow (Canvas) ---
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
-        const heroSection = document.getElementById('home');
-        const toggleBtn = document.getElementById('particle-toggle');
+        const heroSection = document.getElementById('hero');
+        const toggleBtn = document.getElementById('effect-toggle');
+        
+        let isGlowEnabled = !prefersReducedMotion;
+        toggleBtn.textContent = isGlowEnabled ? 'Motion: On' : 'Motion: Off';
         
         let width, height;
-        let particles = [];
-        
-        // Respect prefers-reduced-motion
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let isParticlesEnabled = !prefersReducedMotion;
-        
-        updateToggleText();
+        let time = 0;
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetMouseX = 0;
+        let targetMouseY = 0;
+        let animationFrameId;
 
-        let mouse = {
-            x: null,
-            y: null,
-            radius: 100
-        };
-
-        // Initialize canvas
-        function initCanvas() {
-            // Match canvas size to the hero section specifically
-            width = canvas.width = heroSection.offsetWidth;
-            height = canvas.height = heroSection.offsetHeight;
+        function resizeCanvas() {
+            // Retina display crispness fix
+            const dpr = window.devicePixelRatio || 1;
+            const rect = heroSection.getBoundingClientRect();
             
-            particles = [];
+            width = rect.width;
+            height = rect.height;
             
-            if (!isParticlesEnabled) return;
-
-            // Keep particle count low for a clean, minimal look
-            const numberOfParticles = (width * height) / 15000; 
-            for (let i = 0; i < numberOfParticles; i++) {
-                particles.push(new Particle());
+            canvas.width = width * dpr;
+            canvas.height = height * dpr;
+            ctx.scale(dpr, dpr);
+            
+            // Set default mouse to center on load
+            if (targetMouseX === 0) {
+                targetMouseX = width / 2;
+                targetMouseY = height / 2;
+                mouseX = targetMouseX;
+                mouseY = targetMouseY;
             }
         }
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 1.5 + 0.5; // Tiny particles
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.density = (Math.random() * 20) + 1;
-                // Read color from CSS variable to adapt to light/dark mode
-                const styles = getComputedStyle(document.documentElement);
-                this.colorRGB = styles.getPropertyValue('--particle-color').trim();
-            }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.closePath();
-                ctx.fillStyle = `rgba(${this.colorRGB}, 0.5)`;
-                ctx.fill();
-            }
+        heroSection.addEventListener('mousemove', (e) => {
+            if(!isGlowEnabled) return;
+            const rect = canvas.getBoundingClientRect();
+            targetMouseX = e.clientX - rect.left;
+            targetMouseY = e.clientY - rect.top;
+        });
 
-            update() {
-                // Subtle drifting when mouse is away
-                if (mouse.x === null) {
-                    this.x += (Math.random() - 0.5) * 0.2;
-                    this.y += (Math.random() - 0.5) * 0.2;
-                    
-                    // Constrain to canvas bounds
-                    if(this.x < 0) this.x = width;
-                    if(this.x > width) this.x = 0;
-                    if(this.y < 0) this.y = height;
-                    if(this.y > height) this.y = 0;
-                    return;
-                }
-
-                // Interactive repelling effect when mouse is near
-                let dx = mouse.x - this.x;
-                let dy = mouse.y - this.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                
-                let forceDirectionX = dx / distance;
-                let forceDirectionY = dy / distance;
-                
-                let maxDistance = mouse.radius;
-                let force = (maxDistance - distance) / maxDistance;
-                let directionX = forceDirectionX * force * this.density;
-                let directionY = forceDirectionY * force * this.density;
-
-                if (distance < mouse.radius) {
-                    this.x -= directionX;
-                    this.y -= directionY;
-                } else {
-                    // Return to original base positions smoothly
-                    if (this.x !== this.baseX) {
-                        let dx = this.x - this.baseX;
-                        this.x -= dx / 20;
-                    }
-                    if (this.y !== this.baseY) {
-                        let dy = this.y - this.baseY;
-                        this.y -= dy / 20;
-                    }
-                }
-            }
-        }
-
-        function animate() {
-            if (!isParticlesEnabled) {
+        // Toggle logic
+        toggleBtn.addEventListener('click', () => {
+            isGlowEnabled = !isGlowEnabled;
+            toggleBtn.textContent = isGlowEnabled ? 'Motion: On' : 'Motion: Off';
+            if (isGlowEnabled) {
+                drawGlow();
+            } else {
+                cancelAnimationFrame(animationFrameId);
                 ctx.clearRect(0, 0, width, height);
-                return; // Stop animation loop if disabled
             }
+        });
+
+        function createOrb(x, y, radius, colorString) {
+            const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            gradient.addColorStop(0, colorString);
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            return gradient;
+        }
+
+        function drawGlow() {
+            if (!isGlowEnabled) return;
             
             ctx.clearRect(0, 0, width, height);
-            
-            // Re-fetch color in case theme changed
-            const styles = getComputedStyle(document.documentElement);
-            const currentRGB = styles.getPropertyValue('--particle-color').trim();
+            time += 0.005;
 
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].colorRGB = currentRGB;
-                particles[i].update();
-                particles[i].draw();
-            }
-            requestAnimationFrame(animate);
+            // Smooth mouse interpolation (lerp)
+            mouseX += (targetMouseX - mouseX) * 0.05;
+            mouseY += (targetMouseY - mouseY) * 0.05;
+
+            // Fetch current CSS variables for colors (handles auto theme switching)
+            const rootStyles = getComputedStyle(document.documentElement);
+            const c1 = rootStyles.getPropertyValue('--glow-color-1').trim();
+            const c2 = rootStyles.getPropertyValue('--glow-color-2').trim();
+            const c3 = rootStyles.getPropertyValue('--glow-color-3').trim();
+
+            // Orb 1 (Follows mouse closely, moves in tight circle)
+            const orb1X = mouseX + Math.cos(time) * 100;
+            const orb1Y = mouseY + Math.sin(time) * 100;
+            ctx.fillStyle = createOrb(orb1X, orb1Y, 400, c1);
+            ctx.fillRect(0, 0, width, height);
+
+            // Orb 2 (Opposite direction, wider orbit)
+            const orb2X = mouseX + Math.cos(time + Math.PI) * 200;
+            const orb2Y = mouseY + Math.sin(time + Math.PI) * 150;
+            ctx.fillStyle = createOrb(orb2X, orb2Y, 500, c2);
+            ctx.fillRect(0, 0, width, height);
+
+            // Orb 3 (Slower, floating around center)
+            const orb3X = (width/2) + Math.cos(time * 0.5) * 300;
+            const orb3Y = (height/2) + Math.sin(time * 0.7) * 200;
+            ctx.fillStyle = createOrb(orb3X, orb3Y, 600, c3);
+            ctx.fillRect(0, 0, width, height);
+
+            animationFrameId = requestAnimationFrame(drawGlow);
         }
 
-        // Mouse tracking - only relative to the hero section
-        heroSection.addEventListener('mousemove', (e) => {
-            if (!isParticlesEnabled) return;
-            const rect = canvas.getBoundingClientRect();
-            mouse.x = e.clientX - rect.left;
-            mouse.y = e.clientY - rect.top;
-        });
-
-        heroSection.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        window.addEventListener('resize', () => {
-            initCanvas();
-        });
-
-        // Toggle functionality
-        toggleBtn.addEventListener('click', () => {
-            isParticlesEnabled = !isParticlesEnabled;
-            updateToggleText();
-            if (isParticlesEnabled) {
-                initCanvas();
-                animate();
-            } else {
-                ctx.clearRect(0, 0, width, height);
-            }
-        });
-
-        function updateToggleText() {
-            toggleBtn.textContent = isParticlesEnabled ? '✨ Particles: On' : '✨ Particles: Off';
-        }
-
-        // Start
-        initCanvas();
-        if (isParticlesEnabled) {
-            animate();
-        }
+        if (isGlowEnabled) drawGlow();
 
     </script>
 </body>
