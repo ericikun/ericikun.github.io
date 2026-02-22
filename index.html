@@ -1,17 +1,252 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Eric Xing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio</title>
+    <style>
+        /* Global Styles & Dark Tech Theme */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-color: #0b0f19; /* Deep tech dark blue */
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Canvas Background */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Keeps the particles behind the content */
+        }
+
+        /* Layout Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glassmorphism Cards */
+        .card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #1e293b;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.4s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #38bdf8;
+            box-shadow: 0 10px 25px rgba(56, 189, 248, 0.15);
+        }
+
+        h1 {
+            color: #38bdf8;
+            font-size: 2.5em;
+            margin-top: 0;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            color: #7dd3fc;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            font-size: 1.1em;
+            color: #94a3b8;
+        }
+
+        /* Tech Skill Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 <body>
-  <h1>Eric Xing</h1>
-  <p>UTM student | Data and Analytics</p>
-  <p>
-    <a href="https://www.linkedin.com/">LinkedIn</a> |
-    <a href="https://github.com/ericikun">GitHub</a>
-  </p>
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="container">
+        <header class="card">
+            <h1>Hello, World.</h1>
+            <p style="color: #e2e8f0; font-weight: bold; font-size: 1.2em;">Applied Statistics & Mathematics @ UTM | Aspiring Data Analyst | SQL • R • Python</p>
+        </header>
+
+        <section class="card">
+            <h2>About Me</h2>
+            <p>Data-focused undergraduate student with hands-on experience in SQL, R, Python, and Excel alongside a strong background in campus outreach and customer service. Proven ability to clean and analyze complex quantitative and qualitative datasets while maintaining high accuracy in fast-paced environments. Skilled in technical documentation, presentation design, and student engagement through roles as a Campus Ambassador and Barista.</p>
+        </section>
+
+        <section class="card">
+            <h2>Technical Toolkit & Academics</h2>
+            <p>My foundational toolkit spans programming languages and advanced quantitative analysis.</p>
+            <div class="tags">
+                <span class="tag">Python</span>
+                <span class="tag">SQL</span>
+                <span class="tag">R</span>
+                <span class="tag">Probability & Statistics</span>
+                <span class="tag">Differential Equations</span>
+                <span class="tag">Multivariable Calculus</span>
+                <span class="tag">Logic & Proofs</span>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Experience & Objectives</h2>
+            <p>I am driven by opportunities to apply my analytical capabilities in real-world settings, such as organizational research. I specialize in designing methodologies, analyzing datasets, and drawing actionable insights from statistical evidence.</p>
+        </section>
+
+        <section class="card">
+            <h2>Beyond the Screen</h2>
+            <p>When I am not writing code or solving equations, my primary creative outlet is music. I play the piano and the guzheng, blending traditional and modern sounds, often drawing structural and atmospheric inspiration from artists like The Weeknd.</p>
+        </section>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let particles = [];
+        
+        // Mouse interaction radius
+        let mouse = {
+            x: null,
+            y: null,
+            radius: 120
+        };
+
+        // Initialize canvas size
+        function init() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            
+            // Number of particles based on screen width
+            let numberOfParticles = (width * height) / 9000;
+            for (let i = 0; i < numberOfParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        // Particle Class
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.radius = Math.random() * 2 + 1;
+                this.baseColor = '#38bdf8';
+            }
+
+            update() {
+                // Move particles
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > width) this.vx = -this.vx;
+                if (this.y < 0 || this.y > height) this.vy = -this.vy;
+
+                // Mouse interaction (repel effect)
+                if (mouse.x != null && mouse.y != null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < mouse.radius) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (mouse.radius - distance) / mouse.radius;
+                        
+                        // Push particles away smoothly
+                        this.x -= forceDirectionX * force * 3;
+                        this.y -= forceDirectionY * force * 3;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.baseColor;
+                ctx.fill();
+            }
+        }
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // Connect particles with lines if they are close
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 100) {
+                        ctx.beginPath();
+                        // Opacity based on distance
+                        ctx.strokeStyle = `rgba(56, 189, 248, ${1 - distance / 100})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // Event Listeners
+        window.addEventListener('resize', init);
+        
+        window.addEventListener('mousemove', (event) => {
+            mouse.x = event.x;
+            mouse.y = event.y;
+        });
+
+        window.addEventListener('mouseout', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // Start
+        init();
+        animate();
+    </script>
 </body>
 </html>
-
