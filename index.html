@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* CSS Variables for Auto Light/Dark Theme (Apple Style) */
+        /* CSS Variables for Auto Light/Dark Theme */
         :root {
             --bg-base: #fbfbfd;
             --bg-secondary: #f5f5f7;
@@ -24,9 +24,11 @@
             --pill-text: #1d1d1f;
             --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.08);
-            --glow-color-1: rgba(0, 102, 204, 0.4); /* Blue */
-            --glow-color-2: rgba(142, 68, 173, 0.3); /* Purple */
-            --glow-color-3: rgba(46, 204, 113, 0.3); /* Green */
+            
+            /* GLOW OPTION A: Vibrant Nebula (Light Mode) */
+            --glow-color-1: rgba(186, 85, 211, 0.5); /* Soft Lilac */
+            --glow-color-2: rgba(255, 105, 180, 0.4); /* Rose Pink */
+            --glow-color-3: rgba(255, 223, 0, 0.4); /* Pale Gold */
         }
 
         @media (prefers-color-scheme: dark) {
@@ -45,9 +47,11 @@
                 --pill-text: #f5f5f7;
                 --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.5);
                 --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.7);
-                --glow-color-1: rgba(41, 151, 255, 0.4); /* Light Blue */
-                --glow-color-2: rgba(155, 89, 182, 0.3); /* Light Purple */
-                --glow-color-3: rgba(46, 204, 113, 0.2); /* Soft Green */
+
+                /* GLOW OPTION A: Vibrant Nebula (Dark Mode) */
+                --glow-color-1: rgba(138, 43, 226, 0.4); /* Deep Violet */
+                --glow-color-2: rgba(255, 20, 147, 0.3); /* Hot Pink */
+                --glow-color-3: rgba(255, 215, 0, 0.2); /* Golden Yellow */
             }
         }
 
@@ -117,7 +121,17 @@
         }
 
         section {
-            padding: 7rem 0;
+            padding: 5rem 0;
+        }
+
+        /* Adjusted breathing room for specific sections */
+        #about {
+            margin-top: clamp(6rem, 12vw, 10rem); /* Increased gap below hero */
+            padding-top: 2rem; /* Additional padding within the section */
+        }
+
+        #education {
+            margin-bottom: clamp(6rem, 10vw, 8rem); /* Increased gap above contact */
         }
 
         /* Navigation */
@@ -215,7 +229,6 @@
             color: var(--accent-hover);
         }
 
-        /* Nav specific button */
         .nav-links .btn-primary {
             padding: 0.4rem 1rem;
             font-size: 0.85rem;
@@ -230,7 +243,7 @@
         }
         .hamburger svg { fill: var(--text-primary); width: 24px; height: 24px; }
 
-        /* Hero Section (Apple Intelligence Glow) */
+        /* Hero Section & Canvas Fade */
         .hero {
             position: relative;
             min-height: 95vh;
@@ -241,6 +254,35 @@
             text-align: center;
             padding-top: 64px;
             overflow: hidden;
+            background-color: transparent; /* Ensure canvas shows through */
+        }
+
+        /* Apple-like Material Fade Transition */
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25vh; /* Larger gradient band for smoother transition */
+            background: linear-gradient(to bottom, transparent 0%, var(--bg-base) 100%);
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        /* Optional: Add a subtle blur mask at the bottom for a "frosted glass" fade out */
+        .hero-blur-mask {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 15vh;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            mask-image: linear-gradient(to bottom, transparent, black);
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black);
+            z-index: 4;
+            pointer-events: none;
         }
 
         #hero-canvas {
@@ -251,6 +293,8 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
+            opacity: 0; /* Start hidden, fade in via JS to prevent initial pop */
+            transition: opacity 1s ease-in;
         }
 
         .hero-content {
@@ -438,6 +482,8 @@
             text-align: center;
             background: var(--bg-secondary);
             border-top: 1px solid var(--card-border);
+            padding-top: 6rem;
+            padding-bottom: 6rem;
         }
 
         .contact p {
@@ -462,14 +508,35 @@
             background: var(--bg-secondary);
         }
 
-        /* Scroll Reveal Animation */
+        /* High-Performance Two-Way Scroll Reveal Animation */
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px); /* Reduced translate distance for less jarring pop */
+            /* Use a slightly shorter duration but smoother easing, optimizing for iOS fast scroll */
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
+                        transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, transform;
+            visibility: hidden; /* Prevent interaction while hidden */
         }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+            visibility: visible;
+        }
+
+        /* Respect Reduced Motion - Disable animations globally if user prefers */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal {
+                transition: none !important;
+                opacity: 1 !important;
+                transform: none !important;
+                visibility: visible !important;
+            }
+            html {
+                scroll-behavior: auto !important;
+            }
+        }
 
         /* Responsive Breakpoints */
         @media (max-width: 900px) {
@@ -516,9 +583,9 @@
             </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#experience">Experience</a></li>
-                <li><a href="#skills">Skills</a></li>
                 <li><a href="#education">Education</a></li>
                 <li><a href="./resume.pdf" target="_blank" class="btn btn-primary">Resume</a></li>
             </ul>
@@ -528,6 +595,7 @@
     <main>
         <!-- Hero Section -->
         <section id="hero" class="hero">
+            <div class="hero-blur-mask"></div>
             <canvas id="hero-canvas"></canvas>
             <button id="effect-toggle" class="effect-toggle">Motion: On</button>
             
@@ -547,6 +615,52 @@
                 <p class="about-text">
                     I analyze data with the precision of a mathematician and manage projects with the efficiency of a peak-hour barista. Whether I'm building OOP telecom systems or guiding international students as a Campus Ambassador, my focus is always on clear communication and flawless execution.
                 </p>
+            </div>
+        </section>
+
+        <!-- Skills (Bento Grid) -->
+        <section id="skills" class="container reveal">
+            <h2>Skills</h2>
+            <div class="bento-grid">
+                
+                <div class="glass-card bento-item bento-tech">
+                    <h3>Technical Tools</h3>
+                    <p style="font-size: 0.95rem;">Programming languages and core software capabilities.</p>
+                    <div class="pill-container mt-auto">
+                        <span class="pill">Python</span>
+                        <span class="pill">SQL</span>
+                        <span class="pill">R</span>
+                        <span class="pill">OOP</span>
+                        <span class="pill">Data Cleaning</span>
+                        <span class="pill">Data Visualization</span>
+                        <span class="pill">Excel</span>
+                    </div>
+                </div>
+
+                <div class="glass-card bento-item bento-stat">
+                    <h3>Statistics</h3>
+                    <p style="font-size: 0.95rem;">Theoretical models and applied probability.</p>
+                    <div class="pill-container mt-auto">
+                        <span class="pill">Hypothesis Testing</span>
+                        <span class="pill">Confidence Intervals</span>
+                        <span class="pill">ANOVA</span>
+                        <span class="pill">Linear Regression</span>
+                        <span class="pill">Type I/II Error</span>
+                    </div>
+                </div>
+
+                <div class="glass-card bento-item bento-soft">
+                    <h3>Soft Skills</h3>
+                    <p style="font-size: 0.95rem;">Communication and project management.</p>
+                    <div class="pill-container mt-auto">
+                        <span class="pill">Bilingual (English/Mandarin)</span>
+                        <span class="pill">Cross-Cultural Communication</span>
+                        <span class="pill">Analytical Problem-Solving</span>
+                        <span class="pill">Time Management</span>
+                        <span class="pill">Collaborative Teamwork</span>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -648,15 +762,6 @@
                 
                 <div class="glass-card">
                     <div class="timeline-header">
-                        <h3>Campus Ambassador <span style="font-weight: 400; color: var(--text-secondary);">at Easy Group Inc.</span></h3>
-                        <span>Mar 2024 - Oct 2025</span>
-                    </div>
-                    <p>Increased student engagement through on-campus outreach and onboarding. Provided bilingual support (English and Mandarin) to ensure new international participants clearly understood program resources.</p>
-                    <p style="margin-bottom: 0;">Communicated complex program resources to diverse student groups by designing clear, engaging PowerPoint presentations and supporting on-site event coordination.</p>
-                </div>
-
-                <div class="glass-card">
-                    <div class="timeline-header">
                         <h3>Barista <span style="font-weight: 400; color: var(--text-secondary);">at Chatime</span></h3>
                         <span>Nov 2023 - Present</span>
                     </div>
@@ -664,50 +769,13 @@
                     <p style="margin-bottom: 0;">Performed regular inventory checks and restocking to maintain product availability and minimize out-of-stock issues.</p>
                 </div>
 
-            </div>
-        </section>
-
-        <!-- Skills (Bento Grid) -->
-        <section id="skills" class="container reveal">
-            <h2>Skills</h2>
-            <div class="bento-grid">
-                
-                <div class="glass-card bento-item bento-tech">
-                    <h3>Technical Tools</h3>
-                    <p style="font-size: 0.95rem;">Programming languages and core software capabilities.</p>
-                    <div class="pill-container mt-auto">
-                        <span class="pill">Python</span>
-                        <span class="pill">SQL</span>
-                        <span class="pill">R</span>
-                        <span class="pill">OOP</span>
-                        <span class="pill">Data Cleaning</span>
-                        <span class="pill">Data Visualization</span>
-                        <span class="pill">Excel</span>
+                <div class="glass-card">
+                    <div class="timeline-header">
+                        <h3>Campus Ambassador <span style="font-weight: 400; color: var(--text-secondary);">at Easy Group Inc.</span></h3>
+                        <span>Mar 2024 - Oct 2025</span>
                     </div>
-                </div>
-
-                <div class="glass-card bento-item bento-stat">
-                    <h3>Statistics</h3>
-                    <p style="font-size: 0.95rem;">Theoretical models and applied probability.</p>
-                    <div class="pill-container mt-auto">
-                        <span class="pill">Hypothesis Testing</span>
-                        <span class="pill">Confidence Intervals</span>
-                        <span class="pill">ANOVA</span>
-                        <span class="pill">Linear Regression</span>
-                        <span class="pill">Type I/II Error</span>
-                    </div>
-                </div>
-
-                <div class="glass-card bento-item bento-soft">
-                    <h3>Soft Skills</h3>
-                    <p style="font-size: 0.95rem;">Communication and project management.</p>
-                    <div class="pill-container mt-auto">
-                        <span class="pill">Bilingual (English/Mandarin)</span>
-                        <span class="pill">Cross-Cultural Communication</span>
-                        <span class="pill">Analytical Problem-Solving</span>
-                        <span class="pill">Time Management</span>
-                        <span class="pill">Collaborative Teamwork</span>
-                    </div>
+                    <p>Increased student engagement through on-campus outreach and onboarding. Provided bilingual support (English and Mandarin) to ensure new international participants clearly understood program resources.</p>
+                    <p style="margin-bottom: 0;">Communicated complex program resources to diverse student groups by designing clear, engaging PowerPoint presentations and supporting on-site event coordination.</p>
                 </div>
 
             </div>
@@ -768,22 +836,39 @@
             link.addEventListener('click', () => navLinks.classList.remove('active'));
         });
 
-        // --- 3. Scroll Reveal Animation ---
-        const revealElements = document.querySelectorAll('.reveal');
-        const revealObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { root: null, threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-        revealElements.forEach(el => revealObserver.observe(el));
-
-        // --- 4. 3D Glass Card Tilt Effect ---
-        // Respect reduced motion globally for tilt and canvas
+        // --- 3. High-Performance Two-Way Scroll Reveal Animation (iOS Optimized) ---
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
+        if (!prefersReducedMotion) {
+            const revealElements = document.querySelectorAll('.reveal');
+            
+            // IntersectionObserver setup
+            // Use rootMargin to trigger slightly before element enters viewport to avoid pop-in on fast scroll
+            const revealObserver = new IntersectionObserver((entries) => {
+                // Use requestAnimationFrame to batch DOM DOM class changes, preventing jitter
+                window.requestAnimationFrame(() => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        } else {
+                            // Reverse scroll logic: Only remove 'active' if element is BELOW the viewport
+                            // This ensures elements don't disappear while reading or scrolling up past them
+                            if (entry.boundingClientRect.top > 0) {
+                                entry.target.classList.remove('active');
+                            }
+                        }
+                    });
+                });
+            }, { 
+                root: null, 
+                threshold: 0.05, // Lower threshold triggers sooner
+                rootMargin: "0px 0px -5% 0px" // Triggers when element is 5% away from bottom, helps iOS fast scroll
+            });
+            
+            revealElements.forEach(el => revealObserver.observe(el));
+        }
+
+        // --- 4. 3D Glass Card Tilt Effect ---
         if (!prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
             const cards = document.querySelectorAll('.project-card');
             
@@ -793,24 +878,23 @@
                     const x = e.clientX - rect.left;
                     const y = e.clientY - rect.top;
                     
-                    // Calculate rotation (max 8 degrees)
                     const centerX = rect.width / 2;
                     const centerY = rect.height / 2;
                     const rotateX = ((y - centerY) / centerY) * -8;
                     const rotateY = ((x - centerX) / centerX) * 8;
                     
                     card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-                    card.style.transition = 'none'; // Remove transition during move for instant response
+                    card.style.transition = 'none'; 
                 });
                 
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-                    card.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease'; // Add smooth reset
+                    card.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease'; 
                 });
             });
         }
 
-        // --- 5. Apple Intelligence Glow (Canvas) ---
+        // --- 5. Apple Intelligence Glow (Canvas with Idle Motion) ---
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
         const heroSection = document.getElementById('hero');
@@ -819,16 +903,35 @@
         let isGlowEnabled = !prefersReducedMotion;
         toggleBtn.textContent = isGlowEnabled ? 'Motion: On' : 'Motion: Off';
         
+        // Fade in canvas smoothly on load
+        if (isGlowEnabled) {
+            setTimeout(() => { canvas.style.opacity = '1'; }, 100);
+        }
+
         let width, height;
         let time = 0;
+        let idleTime = 0;
+        
         let mouseX = 0;
         let mouseY = 0;
         let targetMouseX = 0;
         let targetMouseY = 0;
+        
         let animationFrameId;
+        
+        // Idle state management
+        let isIdle = true;
+        let idleTimeout;
+
+        function resetIdleTimer() {
+            isIdle = false;
+            clearTimeout(idleTimeout);
+            idleTimeout = setTimeout(() => {
+                isIdle = true;
+            }, 2000); 
+        }
 
         function resizeCanvas() {
-            // Retina display crispness fix
             const dpr = window.devicePixelRatio || 1;
             const rect = heroSection.getBoundingClientRect();
             
@@ -839,34 +942,48 @@
             canvas.height = height * dpr;
             ctx.scale(dpr, dpr);
             
-            // Set default mouse to center on load
-            if (targetMouseX === 0) {
-                targetMouseX = width / 2;
-                targetMouseY = height / 2;
-                mouseX = targetMouseX;
-                mouseY = targetMouseY;
+            if (mouseX === 0) {
+                mouseX = width / 2;
+                mouseY = height / 2;
+                targetMouseX = mouseX;
+                targetMouseY = mouseY;
             }
         }
 
-        window.addEventListener('resize', resizeCanvas);
+        // Use requestAnimationFrame for resize events to improve performance
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            if (resizeTimeout) cancelAnimationFrame(resizeTimeout);
+            resizeTimeout = requestAnimationFrame(resizeCanvas);
+        });
         resizeCanvas();
 
         heroSection.addEventListener('mousemove', (e) => {
             if(!isGlowEnabled) return;
+            resetIdleTimer();
             const rect = canvas.getBoundingClientRect();
             targetMouseX = e.clientX - rect.left;
             targetMouseY = e.clientY - rect.top;
         });
 
-        // Toggle logic
+        heroSection.addEventListener('mouseleave', () => {
+            if(!isGlowEnabled) return;
+            isIdle = true;
+            clearTimeout(idleTimeout);
+        });
+
         toggleBtn.addEventListener('click', () => {
             isGlowEnabled = !isGlowEnabled;
             toggleBtn.textContent = isGlowEnabled ? 'Motion: On' : 'Motion: Off';
             if (isGlowEnabled) {
+                canvas.style.opacity = '1';
                 drawGlow();
             } else {
-                cancelAnimationFrame(animationFrameId);
-                ctx.clearRect(0, 0, width, height);
+                canvas.style.opacity = '0';
+                setTimeout(() => {
+                    cancelAnimationFrame(animationFrameId);
+                    ctx.clearRect(0, 0, width, height);
+                }, 1000); // Wait for CSS opacity transition to finish
             }
         });
 
@@ -877,45 +994,65 @@
             return gradient;
         }
 
+        // Optimization: Cache CSS variables outside animation loop
+        let currentColors = { c1: '', c2: '', c3: '' };
+        function updateColorsFromCSS() {
+            const rootStyles = getComputedStyle(document.documentElement);
+            currentColors.c1 = rootStyles.getPropertyValue('--glow-color-1').trim();
+            currentColors.c2 = rootStyles.getPropertyValue('--glow-color-2').trim();
+            currentColors.c3 = rootStyles.getPropertyValue('--glow-color-3').trim();
+        }
+        
+        // Initial color fetch and listener for system theme changes
+        updateColorsFromCSS();
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateColorsFromCSS);
+
         function drawGlow() {
             if (!isGlowEnabled) return;
             
             ctx.clearRect(0, 0, width, height);
             time += 0.005;
 
-            // Smooth mouse interpolation (lerp)
+            // Idle wander physics (Lissajous curves)
+            if (isIdle) {
+                idleTime += 0.008;
+                targetMouseX = (width / 2) + Math.sin(idleTime * 0.8) * (width * 0.25);
+                targetMouseY = (height / 2) + Math.cos(idleTime * 0.5) * (height * 0.25);
+            }
+
+            // Interpolate mouse movement
             mouseX += (targetMouseX - mouseX) * 0.05;
             mouseY += (targetMouseY - mouseY) * 0.05;
 
-            // Fetch current CSS variables for colors (handles auto theme switching)
-            const rootStyles = getComputedStyle(document.documentElement);
-            const c1 = rootStyles.getPropertyValue('--glow-color-1').trim();
-            const c2 = rootStyles.getPropertyValue('--glow-color-2').trim();
-            const c3 = rootStyles.getPropertyValue('--glow-color-3').trim();
-
-            // Orb 1 (Follows mouse closely, moves in tight circle)
+            // Orb 1 
             const orb1X = mouseX + Math.cos(time) * 100;
             const orb1Y = mouseY + Math.sin(time) * 100;
-            ctx.fillStyle = createOrb(orb1X, orb1Y, 400, c1);
+            ctx.fillStyle = createOrb(orb1X, orb1Y, 400, currentColors.c1);
             ctx.fillRect(0, 0, width, height);
 
-            // Orb 2 (Opposite direction, wider orbit)
+            // Orb 2 
             const orb2X = mouseX + Math.cos(time + Math.PI) * 200;
             const orb2Y = mouseY + Math.sin(time + Math.PI) * 150;
-            ctx.fillStyle = createOrb(orb2X, orb2Y, 500, c2);
+            ctx.fillStyle = createOrb(orb2X, orb2Y, 500, currentColors.c2);
             ctx.fillRect(0, 0, width, height);
 
-            // Orb 3 (Slower, floating around center)
+            // Orb 3
             const orb3X = (width/2) + Math.cos(time * 0.5) * 300;
             const orb3Y = (height/2) + Math.sin(time * 0.7) * 200;
-            ctx.fillStyle = createOrb(orb3X, orb3Y, 600, c3);
+            ctx.fillStyle = createOrb(orb3X, orb3Y, 600, currentColors.c3);
             ctx.fillRect(0, 0, width, height);
 
             animationFrameId = requestAnimationFrame(drawGlow);
         }
 
-        if (isGlowEnabled) drawGlow();
+        if (isGlowEnabled) {
+            isIdle = true; 
+            drawGlow();
+        }
 
     </script>
 </body>
 </html>
+
+
+
