@@ -25,10 +25,10 @@
             --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.08);
             
-            /* Liquid Ether Palette (Light Mode) - Option B (Softened Sierra Blue) */
-            --liq-c1: 160, 190, 255; /* Softer Blue */
-            --liq-c2: 200, 220, 255; /* Airy Sierra */
-            --liq-c3: 245, 245, 255; /* Almost White/Lavender Wash */
+            /* PART 1 FIX: Light Mode Palette - Subdued Gold Accent */
+            --liq-c1: 160, 190, 255; /* Soft Blue */
+            --liq-c2: 245, 245, 255; /* Icy White */
+            --liq-c3: 252, 248, 238; /* Extremely Pale Champagne/Gold */
         }
 
         @media (prefers-color-scheme: dark) {
@@ -48,7 +48,7 @@
                 --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.5);
                 --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.7);
 
-                /* Liquid Ether Palette (Dark Mode) - Option B (Navy & Icy White) */
+                /* Liquid Ether Palette (Dark Mode) - Untouched */
                 --liq-c1: 10, 30, 60;    /* Deep Navy */
                 --liq-c2: 35, 80, 140;   /* Ocean Blue */
                 --liq-c3: 220, 235, 255; /* Icy White Highlight */
@@ -184,12 +184,13 @@
             justify-content: center;
             padding: 0.8rem 1.6rem;
             border-radius: 980px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
             border: none;
             text-decoration: none;
+            gap: 0.5rem;
         }
 
         .btn-primary {
@@ -217,15 +218,17 @@
         
         .btn-link {
             padding: 0;
-            color: var(--accent);
+            color: var(--text-secondary);
             font-weight: 500;
+            font-size: 0.95rem;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.4rem;
+            transition: color 0.2s;
         }
         
         .btn-link:hover {
-            color: var(--accent-hover);
+            color: var(--text-primary);
         }
 
         .nav-links .btn-primary {
@@ -256,7 +259,6 @@
             background-color: transparent; 
         }
 
-        /* Static Fallback for Reduced Motion or WebGL failure */
         .hero-static-bg {
             position: absolute;
             inset: 0;
@@ -264,7 +266,7 @@
                         radial-gradient(circle at bottom right, rgba(var(--liq-c2), 0.5), transparent 70%),
                         radial-gradient(circle at bottom left, rgba(var(--liq-c3), 0.3), transparent 70%);
             z-index: 0;
-            opacity: 0; /* Hidden by default, shown if needed */
+            opacity: 0; 
             transition: opacity 1s ease;
         }
 
@@ -276,11 +278,10 @@
             height: 100%;
             z-index: 1;
             pointer-events: none;
-            opacity: 0; /* Fade in to prevent pop */
+            opacity: 0; 
             transition: opacity 2s ease-in-out;
         }
 
-        /* Apple-style Overlay Veils for text readability and smooth blending */
         .hero-veil {
             position: absolute;
             inset: 0;
@@ -335,7 +336,6 @@
             max-width: 650px;
             margin-left: auto;
             margin-right: auto;
-            /* Subtle text shadow for guaranteed contrast against liquid */
             text-shadow: 0 2px 10px var(--bg-base);
         }
 
@@ -408,36 +408,26 @@
 
         .project-meta {
             font-size: 0.85rem;
-            color: var(--accent);
+            color: var(--text-secondary);
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             margin-bottom: 0.5rem;
         }
 
-        .project-detail {
-            margin-top: 1.5rem;
-            display: grid;
-            gap: 0.8rem;
-        }
-
-        .project-detail-row {
-            display: grid;
-            grid-template-columns: 70px 1fr;
-            font-size: 0.95rem;
-        }
-
-        .project-detail-row strong {
-            color: var(--text-primary);
-        }
-        
-        .project-detail-row span {
+        .project-desc {
+            margin-top: 1rem;
+            font-size: 1.05rem;
+            line-height: 1.6;
             color: var(--text-secondary);
         }
 
         .project-actions {
             margin-top: auto;
-            padding-top: 2rem;
+            padding-top: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         /* Bento Grid (Skills) */
@@ -615,9 +605,9 @@
     <main>
         <!-- Hero Section -->
         <section id="hero" class="hero">
-            <div class="hero-static-bg"></div> <!-- Fallback background -->
-            <canvas id="hero-canvas"></canvas> <!-- WebGL Liquid Ether -->
-            <div class="hero-veil"></div> <!-- Soft gradient overlay to ensure text legibility -->
+            <div class="hero-static-bg"></div>
+            <canvas id="hero-canvas"></canvas>
+            <div class="hero-veil"></div> 
             <div class="hero-blur-mask"></div>
             
             <button id="effect-toggle" class="effect-toggle">Motion: On</button>
@@ -685,77 +675,50 @@
             </div>
         </section>
 
-        <!-- Projects Section -->
+        <!-- Projects Section - PART 2 FIX: Redesigned Cards -->
         <section id="projects" class="container reveal">
             <h2>Featured Projects</h2>
             <div class="projects-grid">
+                
                 <div class="glass-card project-card">
-                    <div class="project-meta">Jan 2026 • R, SQL</div>
+                    <div class="project-meta">R, SQL, Statistics</div>
                     <h3>Spotify Collaboration vs Solo Popularity</h3>
-                    <div class="project-detail">
-                        <div class="project-detail-row">
-                            <strong>Goal</strong>
-                            <span>Determine what specific factors make a song chart.</span>
-                        </div>
-                        <div class="project-detail-row">
-                            <strong>Method</strong>
-                            <span>Cleaned the dataset, engineered log-stream features, and applied 95% confidence intervals and two-sample t-tests.</span>
-                        </div>
-                        <div class="project-detail-row">
-                            <strong>Impact</strong>
-                            <span>Quantified the exact popularity gap between solo and collaborative tracks.</span>
-                        </div>
-                    </div>
+                    <p class="project-desc">A statistical deep-dive into whether collaborating artists genuinely drive higher stream counts and chart probabilities on Spotify.</p>
+                    
                     <div class="project-actions">
+                        <!-- Enforced target="_self" for strict same-tab navigation -->
+                        <a href="projects/spotify.html" target="_self" class="btn btn-primary">
+                            Read Case Study 
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
                         <a href="https://github.com/ericikun/Spotify-Collab-vs-Solo---SQL-R-Project" target="_blank" rel="noopener noreferrer" class="btn-link">
-                            View on GitHub 
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                            GitHub
                         </a>
                     </div>
                 </div>
 
                 <div class="glass-card project-card">
-                    <div class="project-meta">Mar 2025 • Python, OOP</div>
+                    <div class="project-meta">Python, OOP</div>
                     <h3>Telecom Billing & Call Analytics</h3>
-                    <div class="project-detail">
-                        <div class="project-detail-row">
-                            <strong>Goal</strong>
-                            <span>Architect a scalable billing processor.</span>
-                        </div>
-                        <div class="project-detail-row">
-                            <strong>Method</strong>
-                            <span>Built an OOP system to process JSON call records with contract-specific logic and event filtering.</span>
-                        </div>
-                        <div class="project-detail-row">
-                            <strong>Impact</strong>
-                            <span>Delivered a fully tested (pytest) and robust application with comprehensive technical documentation.</span>
-                        </div>
-                    </div>
+                    <p class="project-desc">An object-oriented Python system designed to process large-scale telecom call records with contract-specific billing logic and event filtering.</p>
+                    
                     <div class="project-actions">
+                        <!-- Placeholder link for future case study -->
+                        <a href="#" class="btn btn-primary" style="opacity: 0.8;">
+                            Case Study Soon
+                        </a>
                         <a href="https://github.com/ericikun/Telecom-Billing-Call-Analytics-System" target="_blank" rel="noopener noreferrer" class="btn-link">
-                            View on GitHub 
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+                            GitHub
                         </a>
                     </div>
                 </div>
 
                 <div class="glass-card project-card">
-                    <div class="project-meta">Coming Soon • Data Eng</div>
+                    <div class="project-meta">Data Eng, SQL</div>
                     <h3>Data Project Coming Soon</h3>
-                    <div class="project-detail">
-                        <div class="project-detail-row">
-                            <strong>Goal</strong>
-                            <span>A future analytics project focusing on data cleaning, exploration, and clear reporting.</span>
-                        </div>
-                        <div class="project-detail-row">
-                            <strong>Method</strong>
-                            <span>To be determined based on organizational research interests.</span>
-                        </div>
-                        <div class="project-detail-row">
-                            <strong>Impact</strong>
-                            <span>Stay tuned for updates.</span>
-                        </div>
-                    </div>
+                    <p class="project-desc">A future analytics project focusing on data cleaning, exploration, and clear reporting based on organizational research interests.</p>
                     <div class="project-actions">
                         <span class="btn-link" style="color: var(--text-secondary); cursor: default;">
                             In Progress
@@ -831,14 +794,12 @@
         </div>
     </footer>
 
-    <!-- Include Three.js for Fluid Simulation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <!-- UI & Interaction Logic -->
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Mobile Nav Toggle
         const menuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
         menuBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
@@ -848,7 +809,6 @@
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
-        // High-Performance Two-Way Scroll Reveal
         if (!prefersReducedMotion) {
             const revealElements = document.querySelectorAll('.reveal');
             const revealObserver = new IntersectionObserver((entries) => {
@@ -865,7 +825,6 @@
             revealElements.forEach(el => revealObserver.observe(el));
         }
 
-        // 3D Glass Card Tilt Effect
         if (!prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
             const cards = document.querySelectorAll('.project-card');
             cards.forEach(card => {
@@ -896,7 +855,6 @@
             const fallbackBg = document.querySelector('.hero-static-bg');
             const toggleBtn = document.getElementById('effect-toggle');
 
-            // Failsafe for reduced motion or missing WebGL
             if (prefersReducedMotion || !window.WebGLRenderingContext || typeof THREE === 'undefined') {
                 canvas.style.display = 'none';
                 fallbackBg.style.opacity = '1';
@@ -906,9 +864,9 @@
 
             const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-            // Adjusted parameters for refined visibility
+            // PART 1 FIX: Restrained Physics for Light Mode to prevent blowing out into Gold
             const LIQUID_OPTS = {
-                mouseForce: isDark ? 10 : 12, // Balanced force
+                mouseForce: isDark ? 10 : 5,    // Drastically lowered in light mode so mouse movement doesn't max out velocity
                 cursorSize: 80,
                 isViscous: true,         
                 viscous: 35,             
@@ -919,14 +877,13 @@
                 resolution: 0.4,
                 isBounce: false,
                 autoDemo: true,
-                autoSpeed: 0.3,          // Slower, calmer wander (was 0.4)
-                autoIntensity: 2.0,      // Reduced idle intensity so light mode isn't too obvious (was 3.5)
+                autoSpeed: 0.3,          
+                autoIntensity: isDark ? 2.0 : 1.2, // Lowered ambient energy in light mode
                 takeoverDuration: 1.5,
                 autoResumeDelay: 1000,   
                 autoRampDuration: 1.0
             };
 
-            // Dynamic color extraction from CSS variables
             function getColorsFromCSS() {
                 const style = getComputedStyle(document.documentElement);
                 const getRGB = (vars) => `rgb(${style.getPropertyValue(vars).trim()})`;
@@ -953,7 +910,6 @@
                 return tex;
             }
 
-            // --- Core Engine Classes ---
             class CommonClass {
                 constructor() {
                     this.width = 0;
@@ -1147,16 +1103,12 @@
                 }
             }
 
-            // --- Shaders ---
             const face_vert = `attribute vec3 position; uniform vec2 boundarySpace; varying vec2 uv; precision highp float; void main(){ vec2 scale = 1.0 - boundarySpace * 2.0; vec3 pos = vec3(position.xy * scale, position.z); uv = vec2(0.5)+(pos.xy)*0.5; gl_Position = vec4(pos, 1.0); }`;
             const line_vert = `attribute vec3 position; uniform vec2 px; precision highp float; varying vec2 uv; void main(){ vec3 pos = position; uv = 0.5 + pos.xy * 0.5; vec2 n = sign(pos.xy); pos.xy = abs(pos.xy) - px * 1.0; pos.xy *= n; gl_Position = vec4(pos, 1.0); }`;
             const mouse_vert = `precision highp float; attribute vec3 position; attribute vec2 uv; uniform vec2 center; uniform vec2 scale; uniform vec2 px; varying vec2 vUv; void main(){ vec2 pos = position.xy * scale * 2.0 * px + center; vUv = uv; gl_Position = vec4(pos, 0.0, 1.0); }`;
             
             const advection_frag = `precision highp float; uniform sampler2D velocity; uniform float dt; uniform bool isBFECC; uniform vec2 fboSize; varying vec2 uv; void main(){ vec2 ratio = max(fboSize.x, fboSize.y) / fboSize; if(isBFECC == false){ vec2 vel = texture2D(velocity, uv).xy; vec2 uv2 = uv - vel * dt * ratio; gl_FragColor = vec4(texture2D(velocity, uv2).xy, 0.0, 0.0); } else { vec2 spot_new = uv; vec2 vel_old = texture2D(velocity, uv).xy; vec2 spot_old = spot_new - vel_old * dt * ratio; vec2 vel_new1 = texture2D(velocity, spot_old).xy; vec2 spot_new2 = spot_old + vel_new1 * dt * ratio; vec2 error = spot_new2 - spot_new; vec2 spot_new3 = spot_new - error / 2.0; vec2 vel_2 = texture2D(velocity, spot_new3).xy; vec2 spot_old2 = spot_new3 - vel_2 * dt * ratio; gl_FragColor = vec4(texture2D(velocity, spot_old2).xy, 0.0, 0.0); } }`;
-            
-            // MODIFIED FOR VISIBILITY FIX: Inject u_baseAlpha so the fluid is highly visible even with zero velocity
             const color_frag = `precision highp float; uniform sampler2D velocity; uniform sampler2D palette; uniform float u_baseAlpha; varying vec2 uv; void main(){ vec2 vel = texture2D(velocity, uv).xy; float lenv = clamp(length(vel), 0.0, 1.0); vec3 c = texture2D(palette, vec2(lenv, 0.5)).rgb; gl_FragColor = vec4(c, mix(u_baseAlpha, 1.0, lenv)); }`;
-            
             const divergence_frag = `precision highp float; uniform sampler2D velocity; uniform float dt; uniform vec2 px; varying vec2 uv; void main(){ float x0 = texture2D(velocity, uv-vec2(px.x, 0.0)).x; float x1 = texture2D(velocity, uv+vec2(px.x, 0.0)).x; float y0 = texture2D(velocity, uv-vec2(0.0, px.y)).y; float y1 = texture2D(velocity, uv+vec2(0.0, px.y)).y; float divergence = (x1 - x0 + y1 - y0) / 2.0; gl_FragColor = vec4(divergence / dt); }`;
             const externalForce_frag = `precision highp float; uniform vec2 force; varying vec2 vUv; void main(){ vec2 circle = (vUv - 0.5) * 2.0; float d = 1.0 - min(length(circle), 1.0); d *= d; gl_FragColor = vec4(force * d, 0.0, 1.0); }`;
             const poisson_frag = `precision highp float; uniform sampler2D pressure; uniform sampler2D divergence; uniform vec2 px; varying vec2 uv; void main(){ float p0 = texture2D(pressure, uv + vec2(px.x * 2.0, 0.0)).r; float p1 = texture2D(pressure, uv - vec2(px.x * 2.0, 0.0)).r; float p2 = texture2D(pressure, uv + vec2(0.0, px.y * 2.0)).r; float p3 = texture2D(pressure, uv - vec2(0.0, px.y * 2.0)).r; float div = texture2D(divergence, uv).r; gl_FragColor = vec4((p0 + p1 + p2 + p3) / 4.0 - div); }`;
@@ -1273,7 +1225,6 @@
                         uniforms: {
                             velocity: { value: this.simulation.fbos.vel_0.texture },
                             palette: { value: makePaletteTexture(getColorsFromCSS()) },
-                            // BASE ALPHA CONTROL: 25% in Light Mode (subtle), 45% in Dark Mode (pops the white)
                             u_baseAlpha: { value: window.matchMedia('(prefers-color-scheme: dark)').matches ? 0.45 : 0.25 }
                         }
                     });
@@ -1333,20 +1284,17 @@
 
             const webgl = new WebGLManager({ $canvas: canvas, $wrapper: wrapper, opts: LIQUID_OPTS });
 
-            // Handle Theme Changes smoothly (updates palette AND base opacity logic)
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
                 webgl.output.material.uniforms.palette.value = makePaletteTexture(getColorsFromCSS());
                 webgl.output.material.uniforms.u_baseAlpha.value = e.matches ? 0.45 : 0.25;
             });
 
-            // Handle Resizing smoothly
             let resizeRaf;
             window.addEventListener('resize', () => {
                 cancelAnimationFrame(resizeRaf);
                 resizeRaf = requestAnimationFrame(() => webgl.resize());
             });
 
-            // Pause off-screen to save battery
             const io = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting && !document.hidden) {
                     webgl.start();
@@ -1357,7 +1305,6 @@
             io.observe(wrapper);
             document.addEventListener('visibilitychange', () => document.hidden ? webgl.pause() : webgl.start());
 
-            // Fade in effect and manual toggle
             setTimeout(() => { canvas.style.opacity = '1'; }, 100);
             
             let isEnabled = true;
@@ -1378,4 +1325,3 @@
     </script>
 </body>
 </html>
-
