@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Popularity Analysis - Zixu Xing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Shared Apple-Style Design Tokens */
+        :root {
+            --bg-base: #fbfbfd;
+            --bg-secondary: #f5f5f7;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --nav-bg: rgba(251, 251, 253, 0.75);
+            --nav-border: rgba(0, 0, 0, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(0, 0, 0, 0.05);
+            --accent: #0066cc;
+            --accent-hover: #0077ed;
+            --pill-bg: #e8e8ed;
+            --pill-text: #1d1d1f;
+            --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --gradient-subtle: linear-gradient(180deg, #fbfbfd 0%, #f5f5f7 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-base: #000000;
+                --bg-secondary: #111111;
+                --text-primary: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --nav-bg: rgba(0, 0, 0, 0.75);
+                --nav-border: rgba(255, 255, 255, 0.15);
+                --card-bg: rgba(28, 28, 30, 0.5);
+                --card-border: rgba(255, 255, 255, 0.1);
+                --accent: #2997ff;
+                --accent-hover: #4fb0ff;
+                --pill-bg: #333336;
+                --pill-text: #f5f5f7;
+                --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.5);
+                --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.7);
+                --gradient-subtle: linear-gradient(180deg, #000000 0%, #111111 100%);
+            }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
+        a:hover { color: var(--accent-hover); }
+
+        h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; }
+        h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin-bottom: 1.5rem; }
+        h2 { font-size: 2.2rem; margin-bottom: 1.5rem; }
+        h3 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+        p { color: var(--text-secondary); font-size: 1.15rem; margin-bottom: 1.5rem; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+        section { padding: 5rem 0; }
+        .section-light { background: var(--bg-base); }
+        .section-darker { background: var(--bg-secondary); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: var(--nav-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--nav-border); z-index: 100;
+        }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; height: 64px; max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+        .logo { font-weight: 600; font-size: 1.25rem; color: var(--text-primary); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; list-style: none; }
+        .nav-links a { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; }
+
+        /* Buttons & Pills */
+        .btn { display: inline-flex; align-items: center; padding: 0.6rem 1.2rem; border-radius: 980px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; }
+        .btn-primary { background-color: var(--accent); color: #ffffff !important; }
+        .btn-primary:hover { background-color: var(--accent-hover); transform: scale(1.02); }
+        .btn-secondary { background-color: transparent; color: var(--text-primary); border: 1px solid var(--card-border); }
+        .pill { background: var(--pill-bg); color: var(--pill-text); padding: 0.4rem 1rem; border-radius: 980px; font-size: 0.85rem; font-weight: 500; }
+
+        /* Article Layout specific */
+        .case-hero {
+            padding-top: 160px;
+            padding-bottom: 5rem;
+            text-align: center;
+            background: var(--gradient-subtle);
+            border-bottom: 1px solid var(--card-border);
+        }
+        .case-hero p.lead {
+            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            max-width: 750px;
+            margin: 0 auto 2rem;
+            color: var(--text-secondary);
+        }
+        .tags { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .bento-item { display: flex; flex-direction: column; }
+        .bento-item h3 { color: var(--text-primary); font-size: 1.1rem; margin-bottom: 0.8rem;}
+        .bento-item p { font-size: 1rem; margin-bottom: 0; }
+
+        /* Content blocks */
+        .content-block { margin-bottom: 4rem; }
+        .content-block:last-child { margin-bottom: 0; }
+        
+        .split-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        @media (min-width: 850px) {
+            .split-layout { grid-template-columns: 1.2fr 1fr; }
+        }
+
+        .img-fluid {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--card-border);
+        }
+        .img-caption {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+        }
+
+        .data-list { list-style: none; margin-top: 1.5rem; margin-bottom: 2rem; }
+        .data-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1.2rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+        .data-list li strong { color: var(--text-primary); }
+        .data-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .highlight-box {
+            background: var(--pill-bg);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem 2rem;
+            border-radius: 0 16px 16px 0;
+            margin: 2.5rem 0;
+        }
+        .highlight-box h4 { margin-bottom: 0.5rem; color: var(--text-primary); font-size: 1.1rem; }
+        .highlight-box p { margin-bottom: 0; font-size: 1.05rem; }
+
+        .stat-callout {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.04em;
+        }
+
+        footer { text-align: center; padding: 4rem 0; border-top: 1px solid var(--card-border); }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: opacity, transform;
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-content">
+            <a href="../index.html" class="logo">← Zixu Xing</a>
+            <ul class="nav-links">
+                <li><a href="../resume.pdf" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Resume</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Project Hero -->
+        <header class="case-hero">
+            <div class="container reveal">
+                <div class="tags">
+                    <span class="pill">Statistical Inference</span>
+                    <span class="pill">R</span>
+                    <span class="pill">SQL</span>
+                </div>
+                <h1>Decoding Spotify Popularity</h1>
+                <p class="lead">In the music industry, featured artists are considered a cheat code for virality. But does adding more artists actually guarantee more streams? I built an end-to-end statistical pipeline to find out.</p>
+                <div style="margin-top: 2rem;">
+                    <a href="https://github.com/ericikun/Spotify-Collab-vs-Solo---SQL-R-Project" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View Raw Code on GitHub</a>
+                </div>
+            </div>
+        </header>
+
+        <!-- The Context & The Problem -->
+        <section class="section-light">
+            <div class="container">
+                <div class="content-block reveal">
+                    <h2>The Context</h2>
+                    <p>Record labels and independent musicians frequently invest heavy budgets into collaborative tracks, operating on the assumption that combining artist fanbases mathematically ensures greater reach.</p>
+                    <p>The goal of this project was to move past industry intuition and apply rigorous statistical testing to real Spotify data. Specifically, I wanted to answer two fundamental questions:</p>
+                    
+                    <div class="bento-grid">
+                        <div class="glass-card bento-item">
+                            <h3>1. Stream Volume</h3>
+                            <p>Do collaborative tracks inherently generate a statistically higher mean of streams compared to tracks exclusively by a solo artist?</p>
+                        </div>
+                        <div class="glass-card bento-item">
+                            <h3>2. Chart Probability</h3>
+                            <p>Are collaborative tracks statistically more likely to break into the Spotify Global Charts?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data Engineering (SQL & R) -->
+        <section class="section-darker">
+            <div class="container">
+                <div class="content-block reveal">
+                    <h2>Data Engineering & The Pipeline</h2>
+                    <p>Analytical models are only as reliable as the data fed into them. Working with a raw dataset of 952 tracks, the data initially contained formatting issues that broke standard mathematical functions.</p>
+                    
+                    <ul class="data-list">
+                        <li><strong>SQL Profiling:</strong> Used SQLite (<code>sqlite_master</code>, <code>LIMIT</code> queries) to rapidly profile the schema, validate total row counts, and understand the raw data structure before loading it into memory.</li>
+                        <li><strong>Aggressive Coercion (R):</strong> The <code>streams</code> column was improperly formatted as character strings. I applied numeric casting while actively isolating and suppressing coercion warnings to cleanly identify and drop <code>NA</code> rows without corrupting the dataset.</li>
+                        <li><strong>Feature Engineering:</strong> Created a binary <code>charted</code> flag and a categorical <code>group</code> segment based on artist counts.</li>
+                        <li><strong>Logarithmic Transformation:</strong> Streaming data suffers from extreme positive skew (a few tracks have billions of streams, most have thousands). I engineered a <code>log_streams</code> feature to normalize the distribution, making it suitable for a t-test.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Findings & Statistical Methodology -->
+        <section class="section-light">
+            <div class="container">
+                
+                <div class="content-block split-layout reveal">
+                    <div>
+                        <h2>Finding 1: Log-Streams</h2>
+                        <p>To evaluate if collaborations trigger a higher volume of streams, I executed a <strong>Welch Two-Sample t-test</strong> (one-sided) targeting the engineered <code>log_streams</code> metric.</p>
+                        <p>The results contradicted industry assumptions entirely. The mean log-streams for collaborations (19.29) was actually slightly <em>lower</em> than solo tracks (19.64).</p>
+                        
+                        <div class="highlight-box">
+                            <h4>Result: Fail to reject H0 (p = 1)</h4>
+                            <p>There is absolutely no statistical evidence supporting the theory that collaborative songs yield a higher average stream count than solo tracks.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- Note: Path points relative to projects folder -->
+                        <img src="../boxplot_log_streams_by_group.png" alt="Boxplot of Log Streams by Group" class="img-fluid" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="display:none; padding: 3rem; text-align: center; border: 1px dashed var(--card-border); border-radius: 16px; color: var(--text-secondary);">
+                            [Visualization: Boxplot comparing Log Streams between Solo and Collab groups]
+                        </div>
+                        <div class="img-caption">Visualizing the variance and mean of log(streams) by group.</div>
+                    </div>
+                </div>
+
+                <div style="margin: 6rem 0; border-top: 1px solid var(--card-border);"></div>
+
+                <div class="content-block reveal">
+                    <h2>Finding 2: Charting Probability</h2>
+                    <p>While absolute stream counts didn't favor collaborations, I hypothesized they might still act as a viral catalyst, pushing songs onto the Spotify charts faster. To test this, I ran a <strong>Two-Proportion Z-Test</strong>.</p>
+                    
+                    <div class="bento-grid" style="margin-top: 2rem;">
+                        <div class="glass-card bento-item">
+                            <div class="stat-callout">59.5%</div>
+                            <p><strong>Collab Chart Rate</strong> (218 of 366 tracks)</p>
+                        </div>
+                        <div class="glass-card bento-item">
+                            <div class="stat-callout">56.3%</div>
+                            <p><strong>Solo Chart Rate</strong> (330 of 586 tracks)</p>
+                        </div>
+                    </div>
+
+                    <p style="margin-top: 2rem;">Despite a visible 3.2% increase in charting frequency for collaborations, the statistical p-value returned at <strong>0.179</strong>.</p>
+                    <div class="highlight-box">
+                        <h4>Result: Fail to reject H0</h4>
+                        <p>The observed increase is not statistically significant. We cannot confidently claim that collaborations improve the likelihood of a song charting.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Limitations & Learnings -->
+        <section class="section-darker">
+            <div class="container">
+                <div class="content-block reveal">
+                    <h2>Limitations & What I Learned</h2>
+                    <p>A crucial step in rigorous analytics is acknowledging the mathematical limits of a model. To validate my findings, I ran a <strong>Statistical Power Analysis</strong> (<code>power.prop.test</code>) aiming to detect a true 10% difference in charting rates with an 80% detection chance.</p>
+                    <p>The test revealed that <strong>388 rows per group</strong> were required. Because my collaboration group only contained 366 valid rows, the dataset was marginally underpowered to detect that specific effect size.</p>
+                    
+                    <h3 style="margin-top: 3rem;">Final Takeaways</h3>
+                    <ul class="data-list">
+                        <li><strong>Data Cleaning is Paramount:</strong> A single improperly formatted string can break an entire statistical pipeline. Aggressive, precise cleaning was the most critical step of this project.</li>
+                        <li><strong>Data > Intuition:</strong> The music industry heavily favors collaborations, but the data proved that solo tracks hold their ground flawlessly. Real-world data often contradicts widely accepted assumptions.</li>
+                        <li><strong>Causation vs. Correlation:</strong> This was an observational dataset. While we found no significant popularity boost from collaborations, proving definitive causation would require randomized control testing.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="../index.html" class="btn btn-primary">← Return to Portfolio</a>
+        </div>
+    </footer>
+
+    <script>
+        // High-Performance Two-Way Scroll Reveal
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefersReducedMotion) {
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                window.requestAnimationFrame(() => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        } else if (entry.boundingClientRect.top > 0) {
+                            entry.target.classList.remove('active');
+                        }
+                    });
+                });
+            }, { root: null, threshold: 0.05, rootMargin: "0px 0px -5% 0px" });
+            revealElements.forEach(el => revealObserver.observe(el));
+        }
+    </script>
+</body>
+</html>
