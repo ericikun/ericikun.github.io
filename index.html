@@ -25,7 +25,7 @@
             --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
             --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.08);
             
-            /* PART 1 FIX: Light Mode Palette - Subdued Gold Accent */
+            /* Light Mode Palette - Subdued Gold Accent */
             --liq-c1: 160, 190, 255; /* Soft Blue */
             --liq-c2: 245, 245, 255; /* Icy White */
             --liq-c3: 252, 248, 238; /* Extremely Pale Champagne/Gold */
@@ -120,17 +120,24 @@
             padding: 0 2rem;
         }
 
+        /* MASSIVELY Increased Apple-style breathing room between sections */
         section {
-            padding: 5rem 0;
+            padding: clamp(8rem, 12vw, 12rem) 0;
+        }
+
+        /* Adjusted padding/margin for specific elements to match new spacious feel */
+        .hero {
+            padding-top: 64px;
+            min-height: 95vh;
         }
 
         #about {
-            margin-top: clamp(6rem, 12vw, 10rem); 
+            margin-top: clamp(8rem, 12vw, 12rem); 
             padding-top: 2rem;
         }
 
         #education {
-            margin-bottom: clamp(6rem, 10vw, 8rem);
+            margin-bottom: clamp(8rem, 12vw, 12rem);
         }
 
         /* Navigation */
@@ -248,13 +255,11 @@
         /* Hero Section & WebGL Liquid Ether */
         .hero {
             position: relative;
-            min-height: 95vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding-top: 64px;
             overflow: hidden;
             background-color: transparent; 
         }
@@ -491,8 +496,8 @@
             text-align: center;
             background: var(--bg-secondary);
             border-top: 1px solid var(--card-border);
-            padding-top: 6rem;
-            padding-bottom: 6rem;
+            padding-top: clamp(8rem, 12vw, 12rem);
+            padding-bottom: clamp(8rem, 12vw, 12rem);
         }
 
         .contact p {
@@ -520,17 +525,16 @@
         /* High-Performance Two-Way Scroll Reveal */
         .reveal {
             opacity: 0;
-            transform: translateY(30px); 
-            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), 
-                        transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(40px); 
+            /* Softened 1s transition, removed visibility:hidden to allow proper receding fade */
+            transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), 
+                        transform 1s cubic-bezier(0.25, 1, 0.5, 1);
             will-change: opacity, transform;
-            visibility: hidden; 
         }
         
         .reveal.active { 
             opacity: 1; 
             transform: translateY(0); 
-            visibility: visible;
         }
 
         /* Respect Reduced Motion */
@@ -539,7 +543,6 @@
                 transition: none !important;
                 opacity: 1 !important;
                 transform: none !important;
-                visibility: visible !important;
             }
             html {
                 scroll-behavior: auto !important;
@@ -605,9 +608,9 @@
     <main>
         <!-- Hero Section -->
         <section id="hero" class="hero">
-            <div class="hero-static-bg"></div>
-            <canvas id="hero-canvas"></canvas>
-            <div class="hero-veil"></div> 
+            <div class="hero-static-bg"></div> <!-- Fallback background -->
+            <canvas id="hero-canvas"></canvas> <!-- WebGL Liquid Ether -->
+            <div class="hero-veil"></div> <!-- Soft gradient overlay to ensure text legibility -->
             <div class="hero-blur-mask"></div>
             
             <button id="effect-toggle" class="effect-toggle">Motion: On</button>
@@ -636,16 +639,18 @@
             <h2>Skills</h2>
             <div class="bento-grid">
                 <div class="glass-card bento-item bento-tech">
-                    <h3>Technical Tools</h3>
+                    <h3>Technical</h3>
                     <p style="font-size: 0.95rem;">Programming languages and core software capabilities.</p>
                     <div class="pill-container mt-auto">
-                        <span class="pill">Python</span>
                         <span class="pill">SQL</span>
                         <span class="pill">R</span>
-                        <span class="pill">OOP</span>
+                        <span class="pill">Python</span>
+                        <span class="pill">Object-Oriented Programming (OOP)</span>
                         <span class="pill">Data Cleaning</span>
                         <span class="pill">Data Visualization</span>
                         <span class="pill">Excel</span>
+                        <span class="pill">Word</span>
+                        <span class="pill">PowerPoint</span>
                     </div>
                 </div>
 
@@ -653,11 +658,12 @@
                     <h3>Statistics</h3>
                     <p style="font-size: 0.95rem;">Theoretical models and applied probability.</p>
                     <div class="pill-container mt-auto">
-                        <span class="pill">Hypothesis Testing</span>
                         <span class="pill">Confidence Intervals</span>
-                        <span class="pill">ANOVA</span>
-                        <span class="pill">Linear Regression</span>
+                        <span class="pill">Hypothesis Testing</span>
+                        <span class="pill">Statistical Power</span>
                         <span class="pill">Type I/II Error</span>
+                        <span class="pill">One-Factor ANOVA</span>
+                        <span class="pill">Simple Linear Regression</span>
                     </div>
                 </div>
 
@@ -665,28 +671,31 @@
                     <h3>Soft Skills</h3>
                     <p style="font-size: 0.95rem;">Communication and project management.</p>
                     <div class="pill-container mt-auto">
-                        <span class="pill">Bilingual (English/Mandarin)</span>
                         <span class="pill">Cross-Cultural Communication</span>
-                        <span class="pill">Analytical Problem-Solving</span>
-                        <span class="pill">Time Management</span>
+                        <span class="pill">Time Management & Multitasking</span>
+                        <span class="pill">Detail-Oriented Execution</span>
                         <span class="pill">Collaborative Teamwork</span>
+                        <span class="pill">Analytical Problem-Solving</span>
+                        <span class="pill">Process Improvement</span>
+                        <span class="pill">Adaptability</span>
+                        <span class="pill">High Accuracy</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Projects Section - PART 2 FIX: Redesigned Cards -->
+        <!-- Projects Section -->
         <section id="projects" class="container reveal">
             <h2>Featured Projects</h2>
             <div class="projects-grid">
                 
                 <div class="glass-card project-card">
-                    <div class="project-meta">R, SQL, Statistics</div>
+                    <!-- Added Date to Meta -->
+                    <div class="project-meta">Jan. 2026 • R, SQL, Statistics</div>
                     <h3>Spotify Collaboration vs Solo Popularity</h3>
                     <p class="project-desc">A statistical deep-dive into whether collaborating artists genuinely drive higher stream counts and chart probabilities on Spotify.</p>
                     
                     <div class="project-actions">
-                        <!-- Enforced target="_self" for strict same-tab navigation -->
                         <a href="projects/spotify.html" target="_self" class="btn btn-primary">
                             Read Case Study 
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 4px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -699,12 +708,12 @@
                 </div>
 
                 <div class="glass-card project-card">
-                    <div class="project-meta">Python, OOP</div>
+                    <!-- Added Date to Meta -->
+                    <div class="project-meta">Mar. 2025 • Python, OOP</div>
                     <h3>Telecom Billing & Call Analytics</h3>
                     <p class="project-desc">An object-oriented Python system designed to process large-scale telecom call records with contract-specific billing logic and event filtering.</p>
                     
                     <div class="project-actions">
-                        <!-- Placeholder link for future case study -->
                         <a href="#" class="btn btn-primary" style="opacity: 0.8;">
                             Case Study Soon
                         </a>
@@ -764,10 +773,11 @@
                     <p><strong>Program:</strong> Applied Statistics and Mathematics</p>
                     <p style="margin-bottom: 0.5rem;"><strong>Relevant Coursework:</strong></p>
                     <div class="pill-container">
-                        <span class="pill">CSC148 Computer Science</span>
-                        <span class="pill">STA256 Probability & Stat I</span>
+                        <span class="pill">CSC148 Intro to Computer Science</span>
+                        <span class="pill">STA260 Probability & Stat II</span>
                         <span class="pill">STA258 Applied Probability</span>
                         <span class="pill">MAT236 Vector Calculus</span>
+                        <span class="pill">MAT244 Differential Equations I</span>
                     </div>
                 </div>
             </div>
@@ -794,12 +804,14 @@
         </div>
     </footer>
 
+    <!-- Include Three.js for Fluid Simulation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <!-- UI & Interaction Logic -->
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        // Mobile Nav Toggle
         const menuBtn = document.getElementById('mobile-menu-btn');
         const navLinks = document.getElementById('nav-links');
         menuBtn.addEventListener('click', () => navLinks.classList.toggle('active'));
@@ -809,6 +821,7 @@
 
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         
+        // High-Performance Two-Way Scroll Reveal
         if (!prefersReducedMotion) {
             const revealElements = document.querySelectorAll('.reveal');
             const revealObserver = new IntersectionObserver((entries) => {
@@ -825,6 +838,7 @@
             revealElements.forEach(el => revealObserver.observe(el));
         }
 
+        // 3D Glass Card Tilt Effect
         if (!prefersReducedMotion && window.matchMedia("(pointer: fine)").matches) {
             const cards = document.querySelectorAll('.project-card');
             cards.forEach(card => {
@@ -855,6 +869,7 @@
             const fallbackBg = document.querySelector('.hero-static-bg');
             const toggleBtn = document.getElementById('effect-toggle');
 
+            // Failsafe for reduced motion or missing WebGL
             if (prefersReducedMotion || !window.WebGLRenderingContext || typeof THREE === 'undefined') {
                 canvas.style.display = 'none';
                 fallbackBg.style.opacity = '1';
@@ -864,9 +879,8 @@
 
             const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-            // PART 1 FIX: Restrained Physics for Light Mode to prevent blowing out into Gold
             const LIQUID_OPTS = {
-                mouseForce: isDark ? 10 : 5,    // Drastically lowered in light mode so mouse movement doesn't max out velocity
+                mouseForce: isDark ? 10 : 5,    
                 cursorSize: 80,
                 isViscous: true,         
                 viscous: 35,             
@@ -877,13 +891,14 @@
                 resolution: 0.4,
                 isBounce: false,
                 autoDemo: true,
-                autoSpeed: 0.3,          
-                autoIntensity: isDark ? 2.0 : 1.2, // Lowered ambient energy in light mode
+                autoSpeed: isDark ? 0.4 : 0.35,          
+                autoIntensity: isDark ? 3.5 : 2.5, 
                 takeoverDuration: 1.5,
                 autoResumeDelay: 1000,   
                 autoRampDuration: 1.0
             };
 
+            // Dynamic color extraction from CSS variables
             function getColorsFromCSS() {
                 const style = getComputedStyle(document.documentElement);
                 const getRGB = (vars) => `rgb(${style.getPropertyValue(vars).trim()})`;
@@ -910,6 +925,7 @@
                 return tex;
             }
 
+            // --- Core Engine Classes ---
             class CommonClass {
                 constructor() {
                     this.width = 0;
@@ -1225,7 +1241,7 @@
                         uniforms: {
                             velocity: { value: this.simulation.fbos.vel_0.texture },
                             palette: { value: makePaletteTexture(getColorsFromCSS()) },
-                            u_baseAlpha: { value: window.matchMedia('(prefers-color-scheme: dark)').matches ? 0.45 : 0.25 }
+                            u_baseAlpha: { value: window.matchMedia('(prefers-color-scheme: dark)').matches ? 0.45 : 0.40 }
                         }
                     });
                     this.scene.add(new THREE.Mesh(new THREE.PlaneGeometry(2, 2), this.material));
@@ -1285,8 +1301,13 @@
             const webgl = new WebGLManager({ $canvas: canvas, $wrapper: wrapper, opts: LIQUID_OPTS });
 
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                const isNowDark = e.matches;
                 webgl.output.material.uniforms.palette.value = makePaletteTexture(getColorsFromCSS());
-                webgl.output.material.uniforms.u_baseAlpha.value = e.matches ? 0.45 : 0.25;
+                webgl.output.material.uniforms.u_baseAlpha.value = isNowDark ? 0.45 : 0.40;
+                if (webgl.autoDriver) {
+                    webgl.autoDriver.speed = isNowDark ? 0.4 : 0.35;
+                    webgl.autoDriver.mouse.autoIntensity = isNowDark ? 3.5 : 2.5;
+                }
             });
 
             let resizeRaf;
