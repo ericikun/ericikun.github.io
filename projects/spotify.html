@@ -169,6 +169,19 @@
             font-weight: bold;
         }
 
+        /* Code/Math snippet */
+        .code-snippet {
+            background: var(--pill-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            border: 1px solid var(--card-border);
+        }
+
         .highlight-box {
             background: var(--pill-bg);
             border-left: 4px solid var(--accent);
@@ -208,7 +221,7 @@
         <div class="nav-content">
             <a href="../index.html" class="logo">← Zixu Xing</a>
             <ul class="nav-links">
-                <li><a href="../resume.pdf" target="_blank" class="btn btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Resume</a></li>
+                <li><a href="../resume.pdf" target="_blank" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Resume</a></li>
             </ul>
         </div>
     </nav>
@@ -236,7 +249,7 @@
                 <div class="content-block reveal">
                     <h2>The Context</h2>
                     <p>Record labels and independent musicians frequently invest heavy budgets into collaborative tracks, operating on the assumption that combining artist fanbases mathematically ensures greater reach.</p>
-                    <p>The goal of this project was to move past industry intuition and apply rigorous statistical testing to real Spotify data. Specifically, I wanted to answer two fundamental questions:</p>
+                    <p>The goal of this project was to move past industry intuition and apply rigorous statistical testing to real Spotify data. Specifically, I wanted to answer these fundamental questions:</p>
                     
                     <div class="bento-grid">
                         <div class="glass-card bento-item">
@@ -246,6 +259,10 @@
                         <div class="glass-card bento-item">
                             <h3>2. Chart Probability</h3>
                             <p>Are collaborative tracks statistically more likely to break into the Spotify Global Charts?</p>
+                        </div>
+                        <div class="glass-card bento-item">
+                            <h3>3. Statistical Power</h3>
+                            <p>Assuming a true 10% difference in charting rates, does the dataset possess enough statistical power to detect this effect?</p>
                         </div>
                     </div>
                 </div>
@@ -273,19 +290,24 @@
         <section class="section-light">
             <div class="container">
                 
+                <!-- Finding 1 -->
                 <div class="content-block split-layout reveal">
                     <div>
                         <h2>Finding 1: Log-Streams</h2>
                         <p>To evaluate if collaborations trigger a higher volume of streams, I executed a <strong>Welch Two-Sample t-test</strong> (one-sided) targeting the engineered <code>log_streams</code> metric.</p>
                         <p>The results contradicted industry assumptions entirely. The mean log-streams for collaborations (19.29) was actually slightly <em>lower</em> than solo tracks (19.64).</p>
                         
+                        <div class="code-snippet">
+                            H<sub>0</sub>: μ_collab - μ_solo ≤ 0<br>
+                            H<sub>1</sub>: μ_collab - μ_solo > 0
+                        </div>
+
                         <div class="highlight-box">
-                            <h4>Result: Fail to reject H0 (p = 1)</h4>
+                            <h4>Result: Fail to reject H<sub>0</sub> (p = 1)</h4>
                             <p>There is absolutely no statistical evidence supporting the theory that collaborative songs yield a higher average stream count than solo tracks.</p>
                         </div>
                     </div>
                     <div>
-                        <!-- Note: Path points relative to projects folder -->
                         <img src="../boxplot_log_streams_by_group.png" alt="Boxplot of Log Streams by Group" class="img-fluid" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                         <div style="display:none; padding: 3rem; text-align: center; border: 1px dashed var(--card-border); border-radius: 16px; color: var(--text-secondary);">
                             [Visualization: Boxplot comparing Log Streams between Solo and Collab groups]
@@ -296,6 +318,7 @@
 
                 <div style="margin: 6rem 0; border-top: 1px solid var(--card-border);"></div>
 
+                <!-- Finding 2 -->
                 <div class="content-block reveal">
                     <h2>Finding 2: Charting Probability</h2>
                     <p>While absolute stream counts didn't favor collaborations, I hypothesized they might still act as a viral catalyst, pushing songs onto the Spotify charts faster. To test this, I ran a <strong>Two-Proportion Z-Test</strong>.</p>
@@ -311,11 +334,20 @@
                         </div>
                     </div>
 
-                    <p style="margin-top: 2rem;">Despite a visible 3.2% increase in charting frequency for collaborations, the statistical p-value returned at <strong>0.179</strong>.</p>
+                    <p style="margin-top: 2rem;">Despite a visible 3.2% increase in charting frequency for collaborations, the statistical p-value returned at <strong>0.179</strong>, leading us to fail to reject H<sub>0</sub> once again.</p>
                     <div class="highlight-box">
-                        <h4>Result: Fail to reject H0</h4>
+                        <h4>Result: Fail to reject H<sub>0</sub></h4>
                         <p>The observed increase is not statistically significant. We cannot confidently claim that collaborations improve the likelihood of a song charting.</p>
                     </div>
+                </div>
+
+                <div style="margin: 6rem 0; border-top: 1px solid var(--card-border);"></div>
+
+                <!-- Finding 3 -->
+                <div class="content-block reveal">
+                    <h2>Finding 3: Statistical Power</h2>
+                    <p>A crucial step in rigorous analytics is acknowledging the mathematical limits of a model. To validate my findings, I ran a <strong>Statistical Power Analysis</strong> (<code>power.prop.test</code>) aiming to detect a true 10% difference in charting rates with an 80% detection chance.</p>
+                    <p>The test revealed that <strong>388 rows per group</strong> were required. Because my collaboration group only contained 366 valid rows, the dataset was marginally underpowered to confidently detect that specific effect size.</p>
                 </div>
 
             </div>
@@ -326,10 +358,7 @@
             <div class="container">
                 <div class="content-block reveal">
                     <h2>Limitations & What I Learned</h2>
-                    <p>A crucial step in rigorous analytics is acknowledging the mathematical limits of a model. To validate my findings, I ran a <strong>Statistical Power Analysis</strong> (<code>power.prop.test</code>) aiming to detect a true 10% difference in charting rates with an 80% detection chance.</p>
-                    <p>The test revealed that <strong>388 rows per group</strong> were required. Because my collaboration group only contained 366 valid rows, the dataset was marginally underpowered to detect that specific effect size.</p>
                     
-                    <h3 style="margin-top: 3rem;">Final Takeaways</h3>
                     <ul class="data-list">
                         <li><strong>Data Cleaning is Paramount:</strong> A single improperly formatted string can break an entire statistical pipeline. Aggressive, precise cleaning was the most critical step of this project.</li>
                         <li><strong>Data > Intuition:</strong> The music industry heavily favors collaborations, but the data proved that solo tracks hold their ground flawlessly. Real-world data often contradicts widely accepted assumptions.</li>
@@ -343,7 +372,7 @@
 
     <footer>
         <div class="container">
-            <a href="../index.html" class="btn btn-primary">← Return to Portfolio</a>
+            <a href="../index.html" class="btn btn-primary">← Back to Portfolio</a>
         </div>
     </footer>
 
