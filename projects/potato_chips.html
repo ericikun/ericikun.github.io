@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consumer Preference Analysis - Zixu Xing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Shared Apple-Style Design Tokens */
+        :root {
+            --bg-base: #fbfbfd;
+            --bg-secondary: #f5f5f7;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --nav-bg: rgba(251, 251, 253, 0.75);
+            --nav-border: rgba(0, 0, 0, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --card-border: rgba(0, 0, 0, 0.05);
+            --accent: #0066cc;
+            --accent-hover: #0077ed;
+            --pill-bg: #e8e8ed;
+            --pill-text: #1d1d1f;
+            --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --gradient-subtle: linear-gradient(180deg, #fbfbfd 0%, #f5f5f7 100%);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-base: #000000;
+                --bg-secondary: #111111;
+                --text-primary: #f5f5f7;
+                --text-secondary: #a1a1a6;
+                --nav-bg: rgba(0, 0, 0, 0.75);
+                --nav-border: rgba(255, 255, 255, 0.15);
+                --card-bg: rgba(28, 28, 30, 0.5);
+                --card-border: rgba(255, 255, 255, 0.1);
+                --accent: #2997ff;
+                --accent-hover: #4fb0ff;
+                --pill-bg: #333336;
+                --pill-text: #f5f5f7;
+                --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.5);
+                --shadow-md: 0 20px 40px rgba(0, 0, 0, 0.7);
+                --gradient-subtle: linear-gradient(180deg, #000000 0%, #111111 100%);
+            }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: var(--accent); text-decoration: none; transition: color 0.2s ease; }
+        a:hover { color: var(--accent-hover); }
+
+        h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.02em; }
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; }
+        h2 { font-size: 2rem; margin-bottom: 1.5rem; }
+        h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+        p { color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 1.5rem; }
+
+        .container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+        section { padding: 4rem 0; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%;
+            background: var(--nav-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--nav-border); z-index: 100;
+        }
+        .nav-content { display: flex; justify-content: space-between; align-items: center; height: 64px; max-width: 1040px; margin: 0 auto; padding: 0 2rem; }
+        .logo { font-weight: 600; font-size: 1.25rem; color: var(--text-primary); }
+        .nav-links { display: flex; gap: 2rem; align-items: center; list-style: none; }
+        .nav-links a { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; }
+        .nav-links a:hover { color: var(--text-primary); }
+
+        /* Buttons & Pills */
+        .btn { display: inline-flex; align-items: center; padding: 0.6rem 1.2rem; border-radius: 980px; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; }
+        .btn-primary { background-color: var(--accent); color: #ffffff !important; }
+        .btn-primary:hover { background-color: var(--accent-hover); transform: scale(1.02); }
+        .btn-secondary { background-color: transparent; color: var(--text-primary); border: 1px solid var(--card-border); }
+        .pill { background: var(--pill-bg); color: var(--pill-text); padding: 0.4rem 1rem; border-radius: 980px; font-size: 0.85rem; font-weight: 500; }
+
+        /* Article Layout specific */
+        .case-hero {
+            padding-top: 150px;
+            padding-bottom: 4rem;
+            text-align: center;
+            background: var(--gradient-subtle);
+            border-bottom: 1px solid var(--card-border);
+        }
+        .case-hero p.lead {
+            font-size: clamp(1.2rem, 2vw, 1.4rem);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: var(--text-secondary);
+        }
+        .tags { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+
+        .glass-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .bento-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bento-item h3 { color: var(--text-primary); }
+
+        /* Content blocks */
+        .content-block {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+            margin-bottom: 4rem;
+        }
+        
+        @media (min-width: 768px) {
+            .content-block.split {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .data-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+        .data-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .data-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .conclusion-box {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent);
+            padding: 1.5rem 2rem;
+            border-radius: 0 16px 16px 0;
+            margin: 2rem 0;
+        }
+        .conclusion-box h4 { margin-bottom: 0.5rem; color: var(--text-primary); }
+        .conclusion-box p { margin-bottom: 0; }
+        
+        /* Documentation Feature specific styling */
+        .doc-feature {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 2rem;
+        }
+        .doc-icon {
+            background: var(--pill-bg);
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        footer { text-align: center; padding: 3rem 0; border-top: 1px solid var(--card-border); }
+
+        /* Reveal Animation */
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            will-change: opacity, transform;
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { transition: none !important; opacity: 1 !important; transform: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-content">
+            <a href="../index.html" class="logo">← Portfolio</a>
+            <ul class="nav-links">
+                <li><a href="../resume.pdf" target="_blank" class="btn btn-primary" style="padding: 0.4rem 1rem; font-size: 0.85rem;">Resume</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Project Hero -->
+        <header class="case-hero">
+            <div class="container reveal">
+                <div class="tags">
+                    <span class="pill">Market Research</span>
+                    <span class="pill">Data Analysis</span>
+                    <span class="pill">Survey Design</span>
+                </div>
+                <h1>Decoding Consumer Cravings</h1>
+                <p class="lead">A data-driven exploration of the snack industry. This project analyzes survey data to uncover the hidden drivers behind teenagers' potato chip purchasing decisions and brand loyalty.</p>
+            </div>
+        </header>
+
+        <section class="container" style="padding-top: 7.5rem;">
+            <!-- The Context & Why This Topic -->
+            <div class="content-block split reveal">
+                <div>
+                    <h2>The Context</h2>
+                    <p>Understanding consumer preferences is the foundation of effective product strategy. In a highly saturated snack market, brands must know exactly what drives a customer to pick up one specific bag over another.</p>
+                    <p>The goal of this project (completed in Aug. 2022) was to analyze primary survey data targeting the 15 to 18 age demographic. The objective was to answer fundamental market research questions and translate raw responses into actionable insights.</p>
+                </div>
+                <div class="glass-card" style="padding: 2rem;">
+                    <h3>Core Research Questions</h3>
+                    <ul class="data-list">
+                        <li><strong>The Purchase Driver:</strong> What dictates choice the most (flavor, price, or brand)?</li>
+                        <li><strong>Consumption Habits:</strong> When and where do consumers eat snacks, and what package size do they prefer?</li>
+                        <li><strong>Health Consciousness:</strong> Do consumers actively check calorie counts when buying traditionally indulgent snacks?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Survey Design & Data -->
+            <div class="content-block reveal" style="margin-top: 5rem;">
+                <div style="text-align: center; margin-bottom: 3rem;">
+                    <h2>Survey Design & Data Collection</h2>
+                    <p style="max-width: 700px; margin: 0 auto;">To evaluate preferences accurately, a targeted consumer survey was deployed. Gathering both quantitative and qualitative data was essential to building a comprehensive demographic profile.</p>
+                </div>
+
+                <div class="bento-grid">
+                    <div class="glass-card bento-item">
+                        <h3>Data Gathering</h3>
+                        <p>Deployed a structured questionnaire using Voluntary-Response Sampling. The process targeted teenagers and successfully captured 37 valid responses.</p>
+                    </div>
+                    <div class="glass-card bento-item">
+                        <h3>Variables Examined</h3>
+                        <p>Tracked key consumer attributes including flavor preferences, spending habits, packaging design (foil versus cylinder), and point of purchase.</p>
+                    </div>
+                    <div class="glass-card bento-item">
+                        <h3>Data Preparation</h3>
+                        <p>Cleaned the raw survey responses (filtering out incomplete or invalid text entries) to prepare the dataset for exploratory analysis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Findings -->
+            <div class="content-block reveal" style="margin-top: 5rem;">
+                <h2>Key Findings</h2>
+                <p>The analysis revealed several distinct patterns in how teenagers evaluate and purchase potato chips.</p>
+                
+                <div class="glass-card" style="margin-top: 2rem;">
+                    <ul class="data-list" style="margin: 0;">
+                        <li><strong>Flavor is Supreme:</strong> 86.5% of respondents indicated flavor as the absolute primary driver for their choice, with BBQ (48.6%) and Original (43.2%) emerging as the top favorites.</li>
+                        <li><strong>Brand Dominance & Packaging:</strong> Lay's captured a massive 83.8% of the preferred brand share. Additionally, over 70% of participants preferred traditional foil packaging over cylinder containers.</li>
+                        <li><strong>Context & Health:</strong> Over half the respondents eat chips primarily while watching TV or Netflix, heavily favoring medium-sized (70g) bags. The data also showed that the majority do not actively consider calories (with a mode of 1 on a 5-point concern scale).</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Methodology & Limitations -->
+            <div class="content-block reveal" style="margin-top: 5rem;">
+                <div class="conclusion-box" style="border-radius: 16px; border-left: none; border-top: 4px solid var(--accent);">
+                    <h2>Methodology & Analytical Integrity</h2>
+                    <p style="margin-bottom: 1.5rem;">A strong analysis requires an honest evaluation of its own boundaries. Understanding the limitations of the data gathering process is critical for drawing responsible conclusions.</p>
+                    
+                    <ul class="data-list">
+                        <li><strong>Methodology Snapshot:</strong> Applied foundational statistical methods to summarize the data. This included calculating measures of central tendency (mean, median, mode), interquartile ranges (IQR), and generating Five Figure Summaries visualized through Box-and-Whisker plots.</li>
+                        <li><strong>Addressing Bias:</strong> The voluntary-response sampling introduced specific limitations. The sample had a noticeable gender bias (predominantly male) and a national bias (majority Chinese participants), limiting the ability to generalize findings to a broad Western demographic.</li>
+                        <li><strong>Response Constraints:</strong> The survey encountered minor response bias, where a few participants provided incomplete explanations or nonsensical text inputs. This reinforced the importance of manual data validation.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Documentation Feature (Option C) -->
+            <div class="content-block reveal" style="margin-top: 5rem;">
+                <div class="glass-card doc-feature">
+                    <div class="doc-icon">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <h2>Documentation & Materials</h2>
+                    <p style="max-width: 600px; margin-bottom: 2rem;">A comprehensive exploratory data analysis report detailing the survey methodology, statistical breakdowns, and visualizations derived from the consumer data.</p>
+                    
+                    <!-- Replace href with the actual path to your report PDF later -->
+                    <a href="#" target="_blank" class="btn btn-primary" style="padding: 0.8rem 2rem; font-size: 1.05rem;">
+                        Open Full Report
+                    </a>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="../index.html" class="btn btn-primary">← Back to Portfolio</a>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal Logic
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!prefersReducedMotion) {
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                window.requestAnimationFrame(() => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        } else if (entry.boundingClientRect.top > 0) {
+                            entry.target.classList.remove('active');
+                        }
+                    });
+                });
+            }, { root: null, threshold: 0.05, rootMargin: "0px 0px -5% 0px" });
+            revealElements.forEach(el => revealObserver.observe(el));
+        }
+    </script>
+</body>
+</html>
