@@ -240,12 +240,14 @@
             </div>
         </header>
 
-        <section class="container">
+        <!-- Added padding-top directly to this section for intentional breathing room above "The Problem" -->
+        <section class="container" style="padding-top: 7.5rem;">
             <!-- The Problem & Architecture -->
             <div class="content-block split reveal">
                 <div>
                     <h2>The Problem: Scale & State</h2>
-                    <p>Telecom companies handle millions of event records daily. Analyzing historical data requires a system that can not only parse raw JSON structures but also maintain a strict internal "state"—remembering active contracts, calculating cross-month billing cycles, and applying complex rules accurately.</p>
+                    <!-- Removed em dash and used parentheses to maintain exact meaning cleanly -->
+                    <p>Telecom companies handle millions of event records daily. Analyzing historical data requires a system that can not only parse raw JSON structures but also maintain a strict internal "state" (remembering active contracts, calculating cross-month billing cycles, and applying complex rules accurately).</p>
                     <p>The goal of this project was to build exactly that: a highly testable, Object-Oriented engine capable of ingesting raw call data and outputting precise customer billing histories.</p>
                 </div>
                 <div class="glass-card" style="padding: 2rem;">
@@ -290,6 +292,7 @@
                 <p>Beyond billing, the system provides powerful analytical tools to query the dataset. I implemented filtering logic to isolate call events by customer, time period, or contract type. Furthermore, the system includes a visual component that maps these historical call connections spatially across a Toronto grid.</p>
                 
                 <div class="feature-image-block">
+                    <!-- Untouched JPG setup -->
                     <img src="telecom_map.jpg" alt="Telecom System Map Visualization" class="img-fluid" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                 </div>
             </div>
@@ -300,7 +303,8 @@
                     <h2>Key Engineering Takeaways</h2>
                     <ul class="data-list">
                         <li><strong>Polymorphism is Powerful:</strong> Implementing <code>new_month()</code> and <code>cancel_contract()</code> across three different subclasses kept the core processing loop incredibly clean. The main engine never needs `if/else` checks for contract types.</li>
-                        <li><strong>Test-Driven Reliability:</strong> Writing robust <code>pytest</code> unit tests was critical. Ensuring edge cases—like rolling over a Prepaid credit or exhausting Term free minutes midway through a call—were tested mathematically guaranteed system reliability.</li>
+                        <!-- Removed em dash and used parentheses -->
+                        <li><strong>Test-Driven Reliability:</strong> Writing robust <code>pytest</code> unit tests was critical. Ensuring edge cases (like rolling over a Prepaid credit or exhausting Term free minutes midway through a call) were tested mathematically guaranteed system reliability.</li>
                         <li><strong>JSON to Objects:</strong> Building the parser to map raw, unstructured dictionary data into strict Python class objects provided a strong foundation in modern data engineering workflows.</li>
                     </ul>
                 </div>
